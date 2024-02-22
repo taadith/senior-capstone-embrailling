@@ -1,17 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <img id="logo" alt="Embraillers logo" src="./assets/logo.png">
+  <div id="app">
+    <BrailleTranslator />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BrailleTranslator from './components/BrailleTranslator.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BrailleTranslator
   }
-}
+};
 </script>
 
 <style>
@@ -23,4 +25,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+#logo {
+  display: block; 
+  max-width: 200px; 
+  margin: 0 auto -200px; /* TODO: Figure out a better way to fix margins than using negative values */
+}
+
 </style>
