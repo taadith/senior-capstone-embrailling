@@ -14,7 +14,10 @@
   
   <script>
   // Import any necessary libraries or helpers for PDF extraction and Braille translation
-  
+  import liblouis from 'liblouis';
+
+  console.info("Liblouis Version:", liblouis.version());
+
   export default {
     name: 'BrailleTranslator',
     data() {
@@ -27,9 +30,13 @@
     //   handleFileUpload(event) {
     //     // ...existing code...
     //   },
-    //   translateToBraille(text) {
-    //     // ...existing code...
-    //   },
+    // translateToBraille() {
+    //     // Example: Translate a hardcoded string to braille
+    //     // Note: Replace 'path/to/braille/tables...' with the actual path to your braille table files
+    //     const translatedText = liblouis.translateString("path/to/braille/tables/en-us-g2.ctb", "Hello, world");
+    //     console.log("Translated Braille:", translatedText);
+    //     this.brailleOutput = translatedText;
+    // },
     //   downloadBraille() {
     //     // ...existing code...
     //   }

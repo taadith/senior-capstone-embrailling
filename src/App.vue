@@ -29,7 +29,7 @@ export default {
 #logo {
   display: block; 
   max-width: 200px; 
-  margin: 0 auto -200px; /* TODO: Figure out a better way to fix margins than using negative values */
+  margin: 0 auto -200px; /* TODO: Figure out a better way to fix margins than using negative */
 }
 
 </style>
