@@ -5,18 +5,16 @@
         <input type="file" @change="handleFileUpload" accept="application/pdf" class="file-input">
       </div>
       
-      <div class="output-section">
-        <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-        <button @click="downloadBraille" class="download-button">Download Braille</button>
-      </div>
+        <div class="output-section">
+            <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
+            <button @click="translateToBraille" class="download-button">Translate to Braille</button>
+        </div>
     </div>
   </template>
   
   <script>
   // Import any necessary libraries or helpers for PDF extraction and Braille translation
-  import liblouis from 'liblouis';
-
-  console.info("Liblouis Version:", liblouis.version());
+  import axios from 'axios';
 
   export default {
     name: 'BrailleTranslator',
@@ -30,13 +28,33 @@
     //   handleFileUpload(event) {
     //     // ...existing code...
     //   },
-    // translateToBraille() {
-    //     // Example: Translate a hardcoded string to braille
-    //     // Note: Replace 'path/to/braille/tables...' with the actual path to your braille table files
-    //     const translatedText = liblouis.translateString("path/to/braille/tables/en-us-g2.ctb", "Hello, world");
-    //     console.log("Translated Braille:", translatedText);
-    //     this.brailleOutput = translatedText;
-    // },
+    translateToBraille() {
+      const apiUrl = 'https://api.funtranslations.com/translate/braille.json';
+      const params = new URLSearchParams();
+      params.append('text', this.inputText);
+      
+      axios.post(apiUrl, {
+            params: {
+                text: this.inputText
+            },
+            headers: {
+                // 'X-Funtranslations-Api-Secret': '<Your_API_Key>'
+            }
+        })
+        .then(response => {
+            if (response.data.contents.translated.length > 0) {
+                // Join the array elements into a single string
+                this.brailleOutput = response.data.contents.translated.join("");
+            } else {
+                // Handle the case where the translated array is empty
+                this.brailleOutput = 'No translation available.';
+            }
+        }) 
+        .catch(error => {
+          console.error('Error translating to Braille:', error);
+          this.brailleOutput = 'Error translating to Braille. Please try again.';
+        });
+    },
     //   downloadBraille() {
     //     // ...existing code...
     //   }
