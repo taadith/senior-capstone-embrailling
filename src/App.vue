@@ -1,5 +1,5 @@
 <template>
-  <img id="logo" alt="Embraillers logo" src="./assets/logo.png">
+  <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png">
   <div id="app">
     <BrailleTranslator />
   </div>
