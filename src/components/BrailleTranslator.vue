@@ -13,8 +13,6 @@
   </template>
   
   <script>
-  // Import any necessary libraries or helpers for PDF extraction and Braille translation
-  import axios from 'axios';
 
   export default {
     name: 'BrailleTranslator',
@@ -29,31 +27,25 @@
     //     // ...existing code...
     //   },
     translateToBraille() {
-      const apiUrl = 'https://api.funtranslations.com/translate/braille.json';
-      const params = new URLSearchParams();
-      params.append('text', this.inputText);
-      
-      axios.post(apiUrl, {
-            params: {
-                text: this.inputText
-            },
-            headers: {
-                // 'X-Funtranslations-Api-Secret': '<Your_API_Key>'
-            }
-        })
-        .then(response => {
-            if (response.data.contents.translated.length > 0) {
-                // Join the array elements into a single string
-                this.brailleOutput = response.data.contents.translated.join("");
-            } else {
-                // Handle the case where the translated array is empty
-                this.brailleOutput = 'No translation available.';
-            }
-        }) 
-        .catch(error => {
-          console.error('Error translating to Braille:', error);
-          this.brailleOutput = 'Error translating to Braille. Please try again.';
-        });
+      const brailleMap = {
+        'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 
+        'f': '⠋', 'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚', 
+        'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝', 'o': '⠕', 
+        'p': '⠏', 'q': '⠟', 'r': '⠗', 's': '⠎', 't': '⠞', 
+        'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽', 
+        'z': '⠵', 
+        ' ': '⠂', // Space
+        '1': '⠼⠁', '2': '⠼⠃', '3': '⠼⠉', '4': '⠼⠙', '5': '⠼⠑', 
+        '6': '⠼⠋', '7': '⠼⠛', '8': '⠼⠓', '9': '⠼⠊', '0': '⠼⠚',
+        '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', '\'': '⠄', 
+        '-': '⠤', '/': '⠌', ':': '⠒', ';': '⠆', '(': '⠷', 
+        ')': '⠾', '"': '⠶', '&': '⠯', '@': '⠈', '#': '⠼⠼',
+      };
+
+      this.brailleOutput = this.inputText.split('').map(char => {
+        const lowerChar = char.toLowerCase();
+        return brailleMap[lowerChar] || char; // Keep the character as is if no Braille mapping exists
+      }).join('');
     },
     //   downloadBraille() {
     //     // ...existing code...
