@@ -23,6 +23,8 @@ export default {
 
   
     handleFileUpload(event) {
+      this.success = false;
+      this.fail = false;
       this.file = event.target.files[0];
     },
 
