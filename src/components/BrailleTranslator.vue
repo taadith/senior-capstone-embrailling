@@ -2,9 +2,10 @@
     <div class="braille-translator">
       <div class="input-section">
         <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
-        <input type="file" @change="handleFileUpload" accept="application/pdf" class="file-input">
+        <div class="file-input">
+          <FileUpload/>
+        </div>
       </div>
-      
         <div class="output-section">
             <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
             <button @click="translateToBraille" class="download-button">Translate to Braille</button>
@@ -15,6 +16,7 @@
   <script>
   // Import any necessary libraries or helpers for PDF extraction and Braille translation
   import axios from 'axios';
+  import FileUpload from './FileUpload.vue';
 
   export default {
     name: 'BrailleTranslator',
@@ -24,6 +26,11 @@
         brailleOutput: ''
       };
     },
+
+    components: {
+      FileUpload
+    },
+
     methods: {
     //   handleFileUpload(event) {
     //     // ...existing code...

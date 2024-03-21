@@ -7,13 +7,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Amplify CLI
+        run: npm install -g @aws-amplify/cli
+
+      - name: Configure Amplify
+        run: amplify configure  # This step might require some interactive setup
+
+      - name: Deploy to Amplify
+        run: amplify publish
+        
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install aws-amplify
+          npm install @aws-amplify/ui-vue aws-amplify
 
       - name: Build
         run: npm run build
