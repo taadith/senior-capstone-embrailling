@@ -1,5 +1,7 @@
 # senior-capstone-embrailling
 
+Website to convert text or pdf to AutoCAD file, for use in TAMU laser cutter.
+
 ## Project setup
 ```
 npm install
