@@ -1,13 +1,15 @@
 <template>
+  <header id="header">
+    <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png">
     <Authenticator :social-providers="['google']">
      <template v-slot="{ signOut }">
-        <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png">
-        <button @click="signOut" id="signout">Sign Out</button>
+        <button @click="signOut" id="signout" class="button">Sign Out</button>
           <div id="app">
             <BrailleTranslator />
           </div>
      </template>
     </Authenticator>
+  </header>
 </template>
 <script>
 import BrailleTranslator from './components/BrailleTranslator.vue';
@@ -44,5 +46,32 @@ export default {
   margin: 0 auto -200px; /* TODO: Figure out a better way to fix margins than using negative */
 }
 
+#signout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+button {
+    transition: all .5s ease;
+    color: #fff;
+    border: 3px solid white;
+    font-family:'Montserrat', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+    font-size: 17px;
+    background-color : transparent;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    color: #001F3F;
+    background-color: #fff;
+}
 
 </style>

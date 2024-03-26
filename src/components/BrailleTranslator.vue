@@ -3,7 +3,7 @@
       <div class="input-section">
         <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
         <input type="file" @change="handleFileUpload" />
-        <button @click="translateToBraille">Translate to Braille</button>
+        <button @click="translateToBraille">Translate</button>
         <div class="file-input">
           <FileUpload/>
         </div>
