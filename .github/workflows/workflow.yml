@@ -9,9 +9,6 @@ jobs:
 
       - name: Install Amplify CLI
         run: npm install -g @aws-amplify/cli
-
-      - name: Deploy to Amplify
-        run: amplify publish
         
       - name: Setup Node.js
         uses: actions/setup-node@v2
