@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 from Translate import translate_to_braille  # Adjust the import statement as needed
 import os
+import subprocess
 
 UPLOAD_FOLDER = 'src/components/uploads'
 
