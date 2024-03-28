@@ -26,7 +26,7 @@ def translate_to_braille_endpoint():
         filepath = os.path.join(filename)
         file.save(filepath)
 
-        # Assuming your translate_to_braille function can handle the file path
+        # Assuming translate_to_braille function can handle the file path
         translated_content = translate_to_braille(filepath)
 
         return jsonify({'translatedContent': translated_content})
