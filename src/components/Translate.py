@@ -38,12 +38,11 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
     # Save it
     with open(output, "w") as f:
         f.write(output_tex)
-    
-    with open('output.tex', 'rb') as data:
-        s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.tex', Body=data)
-    
-    
-    #subprocess.run(['xelatex', 'output.tex'], check=True, cwd='src/components')
-    print("PDF generated successfully.")
+     
+    subprocess.run(['xelatex', 'output.tex'], check=True)
+    # print("PDF generated successfully.")
+
+    with open('output.pdf', 'rb') as data:
+        s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
 
 
