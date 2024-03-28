@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# `tput setaf 2;` sets the text color to green
+# `$(tput sgr0)` resets the text color to the default 
+
 # Install npm packages
 tput setaf 2; echo "Installing npm packages...$(tput sgr0)"
 npm install
