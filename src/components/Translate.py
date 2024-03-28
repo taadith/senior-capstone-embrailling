@@ -1,10 +1,17 @@
 # Load our dependencies
 import pybrl as brl
 import subprocess
+import boto3
+
+
+s3 = boto3.resource('s3')
 
 def translate_to_braille(filename, pdf_password=None, language='english'):
-    
-    # Let's translate the PDF file.
+    # Print out bucket names
+    my_bucket = s3.Bucket('filestorageembraillerbucket185717-staging')
+    for my_bucket_object in my_bucket.objects.all():
+        print(my_bucket_object.key)
+
     translated = brl.translatePDF(filename, password = pdf_password, language = language) # Easy, right?
 
     tex = ""                         # Template contents and what will be edited.
@@ -31,9 +38,11 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
     # Save it
     with open(output, "w") as f:
         f.write(output_tex)
-    
-    subprocess.run(['xelatex', 'output.tex'], check=True, cwd='src/components')
-    print("PDF generated successfully.")
+     
+    subprocess.run(['xelatex', 'output.tex'], check=True)
+    # print("PDF generated successfully.")
 
+    with open('output.pdf', 'rb') as data:
+        s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
 
 
