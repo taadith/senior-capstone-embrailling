@@ -163,100 +163,59 @@ export default {
 };
 </script>
   
-  <style scoped>
-  .braille-translator {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    height: 100vh;
-    padding-top: 50px;
-    background-color: #121212;
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .input-section, .output-section {
-    position: relative;
-    margin: 20px;
-    width: 45%;
-  }
-
-  .text-input,
-  .text-output,
-  .download-button {
-    width: 100%;
-    max-width: 600px;
-    margin: 10px;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .text-input,
-  .text-output {
-    width: 100%;
-    height: 300px;
-    margin-bottom: 15px; /* Space between text area and button */
-    background-color: #1e1e1e;
-    color: #ffffff;
-    font-size: 16px;
-    resize: none; /* Disables resize handle */
-  }
-
-  textarea {
-    width: calc(100% - 40px);
-    height: 150px;
-    margin: 20px;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
-  .textarea-button-container {
-    position: absolute;
-    right: 55px;
-    bottom: 20px;
-  }
-
-  .textarea-button {
-    transition: all .5s ease;
-    color: lightgrey;
-    border: solid rgba(255, 255, 255, 0);
-    border-width: 1px;
-    font-family:'Montserrat', sans-serif;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 1;
-    font-size: 14px;
-    padding: 10px;
-    margin: 5px;
-    outline: none;
-  }
-
-.textarea-button:hover {
-    background: none;
-    border: solid darkgrey;
-    border-radius: 4px;
-    border-width: 1px;
+<style scoped>
+.braille-translator {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+  padding-top: 50px;
+  background-color: #121212;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#translate-button{
-  border-bottom-right-radius: 10px;
+.input-section, .output-section {
+  width: 45%;
 }
 
-  input[type="file"] {
-    display: none;
-  }
-  
-  .download-button {
-    background-color: #2979ff;
-    color: #ffffff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .download-button:hover {
-    background-color: #5393ff;
-  }
-  </style>
-  
+.text-input,
+.text-output,
+.file-input,
+.download-button {
+  width: 100%;
+  max-width: 600px;
+  margin: 10px;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+}
+
+.text-input,
+.text-output {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 15px; /* Space between text area and button */
+  background-color: #1e1e1e;
+  color: #ffffff;
+  font-size: 16px;
+  resize: none; /* Disables resize handle */
+}
+
+.file-input {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+.download-button {
+  background-color: #2979ff;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-button:hover {
+  background-color: #5393ff;
+}
+</style>
