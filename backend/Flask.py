@@ -1,18 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
-from Translate import translate_to_braille  # Adjust the import statement as needed
+from Translate import translate_to_braille
 import os
-import subprocess
-
-UPLOAD_FOLDER = 'src/components/uploads'
+import requests
+from werkzeug.utils import secure_filename
+# import subprocess
 
 app = Flask(__name__)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
+CORS(app)
 @app.route('/translate_to_braille', methods=['POST'])
-@app.route('/upload', methods=['POST'])
 
 def translate_to_braille_endpoint():
     if 'file' not in request.files:
@@ -27,25 +24,99 @@ def translate_to_braille_endpoint():
         filepath = os.path.join(filename)
         file.save(filepath)
 
-        # Assuming translate_to_braille function can handle the file path
         translated_content = translate_to_braille(filepath)
 
         return jsonify({'translatedContent': translated_content})
 
-from werkzeug.utils import secure_filename
+
+# def upload_file():
+#     if 'file' not in request.files:
+#         return 'No file part', 400
+#     file = request.files['file']
+#     if file.filename == '':
+#         return 'No selected file', 400
+#     if file:
+#         filename = secure_filename(file.filename)
+#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         file.save(filepath)
+#         return 'File uploaded successfully', 200
+
+# @app.route('/download', methods=['GET'])
+# def download_file():
+#     # Define the directory where 'output.pdf' is located
+#     directory = os.getcwd()  # Assuming 'output.pdf' is in the current working directory
+#     filename='output.pdf'
+#     print("Serving file from directory:", directory)
+#     print("Filename:", filename)
+#     try:
+#         return send_from_directory(directory, filename=filename, as_attachment=True)
+#     except FileNotFoundError:
+#         return 'File not found.', 404
 
 
-def upload_file():
+def convert_pdf_to_dwg(file_path):
+    zamzar_api_key = "f3f58a14d91cf86b356f18a99bc795ef1124d2af"
+    endpoint = "https://api.zamzar.com/v1/jobs"
+    source_file = file_path
+    target_format = "dwg"
+
+    with open(source_file, 'rb') as file_content:
+        response = requests.post(endpoint, data={'target_format': target_format}, files={'source_file': file_content}, auth=(zamzar_api_key, ''))
+    data = response.json()
+
+    return data['id']  # Return the job ID for the conversion
+
+
+@app.route('/convert_to_dwg', methods=['POST'])
+def convert_to_dwg_endpoint():
     if 'file' not in request.files:
-        return 'No file part', 400
+        return jsonify({'error': 'No file part'}), 400
+
     file = request.files['file']
     if file.filename == '':
-        return 'No selected file', 400
+        return jsonify({'error': 'No selected file'}), 400
+
     if file:
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        filepath = os.path.join(filename)
         file.save(filepath)
-        return 'File uploaded successfully', 200
+
+        job_id = convert_pdf_to_dwg(filepath)
+        return jsonify({'jobId': job_id})
+
+
+def download_dwg(job_id):
+    zamzar_api_key = "f3f58a14d91cf86b356f18a99bc795ef1124d2af"
+    endpoint = f"https://api.zamzar.com/v1/jobs/{job_id}"
+    response = requests.get(endpoint, auth=(zamzar_api_key, ''))
+    data = response.json()
+
+    # Check if the job is finished
+    if data['status'] == 'successful':
+        file_id = data['target_files'][0]['id']
+        download_url = f"https://api.zamzar.com/v1/files/{file_id}/content"
+        local_filename = os.path.join('downloads', f"{file_id}.dwg")
+
+        # Download the DWG file
+        response = requests.get(download_url, stream=True, auth=(zamzar_api_key, ''))
+        with open(local_filename, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=1024):
+                if chunk:  # filter out keep-alive new chunks
+                    f.write(chunk)
+
+        return local_filename
+    else:
+        return None
+
+@app.route('/download_dwg/<int:job_id>', methods=['GET'])
+def download_dwg_endpoint(job_id):
+    dwg_file_path = download_dwg(job_id)
+    if dwg_file_path:
+        directory = os.path.dirname(dwg_file_path)
+        filename = os.path.basename(dwg_file_path)
+        return send_from_directory(directory, filename, as_attachment=True)
+    else:
+        return 'File not found.', 404
 
 
 if __name__ == '__main__':
