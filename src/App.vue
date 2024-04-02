@@ -49,29 +49,8 @@ export default {
 #signout {
   position: absolute;
   top: 20px;
-  right: 20px;
-  padding: 10px 15px;
+  right: 80px;
   cursor: pointer;
-}
-
-button {
-    transition: all .5s ease;
-    color: #fff;
-    border: 3px solid white;
-    font-family:'Montserrat', sans-serif;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 1;
-    font-size: 17px;
-    background-color : transparent;
-    padding: 10px;
-    outline: none;
-    border-radius: 4px;
-}
-
-button:hover {
-    color: #001F3F;
-    background-color: #fff;
 }
 
 </style>
