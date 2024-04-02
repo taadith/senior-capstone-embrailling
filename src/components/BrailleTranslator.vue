@@ -1,70 +1,167 @@
-  <template>
-      <div class="braille-translator">
-        <div class="input-section">
-          <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
-          <div class="textarea-button-container">
-            <label class="textarea-button" for="file-upload">Upload PDF</label>
-            <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
-            <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate</button>
-          </div>
-        </div>
-          <div class="output-section">
-              <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-              <!-- <button @click="translateToBraille" class="download-button">Translate to Braille</button> -->
-          </div>
+<template>
+  <div class="braille-translator">
+    <div class="input-section">
+      <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+      <div class="file-input">
+        <input type="file" @change="handleFileUpload" />
+        <button @click="translateToBraille">Translate</button>
       </div>
-  </template>
-  
-  <script>
-  
-  // Import any necessary libraries or helpers for PDF extraction and Braille translation
-  import axios from 'axios';
+    </div>
+      <div class="output-section">
+          <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
+          <!-- <button @click="downloadPDF">Download PDF</button> -->
+          <input type="file" @change="handleFileChange" accept=".pdf" />
+          <button @click="convertPdfToDwg">Convert PDF to DWG</button>
+          <button @click="downloadDwg(jobId)">Download DWG File</button>
+          <!-- <button @click="translateToBraille" class="download-button">Translate to Braille</button> -->
+      </div>
+  </div>
+</template>
 
-  export default {
-    name: 'BrailleTranslator',
-    data() {
-      return {
-        inputText: '',
-        brailleOutput: '',
-        selectedFile: null
-      };
+<script>
+
+// Import any necessary libraries or helpers for PDF extraction and Braille translation
+import axios from 'axios';
+
+export default {
+  name: 'BrailleTranslator',
+  data() {
+    return {
+      inputText: '',
+      brailleOutput: '',
+      selectedFile: null,
+      selectedPdfFile: null,
+      jobId: null,
+    };
+  },
+
+  components: {
+  },
+
+  methods: {
+    handleFileUpload(event) {
+      this.selectedFile = event.target.files[0];
     },
+  
+    async translateToBraille() {
+      if (!this.selectedFile) {
+        alert('Please select a file first.');
+        return;
+      }
 
-    components: {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/translate_to_braille', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('Translation Success:', response.data);
+        // Handle the response data as needed, such as displaying the translation
+      } catch (error) {
+        console.error('Translation Error:', error);
+      }
     },
-
-    methods: {
-      handleFileUpload(event) {
-        this.selectedFile = event.target.files[0];
-      },
     
-      async translateToBraille() {
-        if (!this.selectedFile) {
-          alert('Please select a file first.');
-          return;
-        }
+    //downloadPDF() {
+    // Fetch the file from the Flask endpoint
+    //  window.location.href = '/api/download'; // Adjust this if your Flask app's URL structure is different
+    //},
 
-        const formData = new FormData();
-        formData.append('file', this.selectedFile);
-        try {
-          const response = await axios.post('http://127.0.0.1:5000/translate_to_braille', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          console.log('Translation Success:', response.data);
-          // Handle the response data as needed, such as displaying the translation
-        } catch (error) {
-          console.error('Translation Error:', error);
-        }
-      },
+    convertPdfToDwg() {
+      console.log("Starting conversion process...");
+
+      if (!this.selectedPdfFile) {
+        alert("Please select a PDF file first.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', this.selectedPdfFile);
       
-      //downloadBraille() {
-        
-     // }
+      console.log("Sending request to Flask...");
+      fetch('http://127.0.0.1:5000/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        console.log("Received response from Flask:", response); // Log response
+        return response.json();
+      })
+      .then(data => {
+        if (data.jobId) {
+          console.log('Conversion started, job ID:', data.jobId);
+          this.jobId = data.jobId;
+        } else {
+          console.error('Failed to start conversion:', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    },
+
+    handleFileChange(event) {
+      const files = event.target.files;
+      if (files.length > 0) {
+        this.selectedPdfFile = files[0];
+        console.log("File selected:", this.selectedPdfFile.name);
+      } else {
+        this.selectedPdfFile = null;
+      }
+    },
+
+    // async startConversion() {
+    //   try {
+    //     const response = await fetch('http://127.0.0.1:5000/convert_to_dwg', { method: 'POST' });
+    //     const data = await response.json();
+    //     this.jobId = data.jobId; // Update jobId with the value received from the server
+    //   } catch (error) {
+    //     console.error('Error starting conversion:', error);
+    //   }
+    // },
+
+    //setJobId(id) {
+      //this.jobId = id;
+      //console.log("Job ID set:", this.jobId);
+    //},
+
+    downloadDwg(jobId) {
+      console.log("Attempting to download DWG file for Job ID:", jobId);
+      if (!jobId) {
+        alert("Job ID is required for downloading the DWG file.");
+        return;
+      }
+
+      const url = `http://127.0.0.1:5000/download_dwg/${jobId}`;
+
+      // Fetch the DWG file from the server
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Server returned ${response.status} when trying to download DWG file.`);
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          // Create a new link element and trigger the download
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.setAttribute('download', 'output.dwg');
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+          window.URL.revokeObjectURL(downloadUrl);
+        })
+        .catch(error => {
+          console.error('Download failed:', error);
+        });
     }
-  };
-  </script>
+  }
+};
+</script>
   
   <style scoped>
   .braille-translator {
