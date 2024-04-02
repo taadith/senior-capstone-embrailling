@@ -2,6 +2,7 @@
     <div class="braille-translator">
       <div class="input-section">
         <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+        <button @click="translateTextboxToBraille">Translate</button>
         <div class="file-input">
           <input type="file" @change="handleFileUpload" />
           <button @click="translateToBraille">Translate</button>
@@ -57,6 +58,32 @@
           console.error('Translation Error:', error);
         }
       },
+
+      async translateTextboxToBraille(){
+        if(!(this.inputText.trim().length > 0)){
+          alert('Please enter text first.')
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('text', this.inputText);
+        console.log(this.inputText);
+
+        this.inputText = '';
+
+        try {
+          const response = await axios.post('http://127.0.0.1:5000/translate_textbox_to_braille', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          console.log('Translation Success:', response.data);
+          // Handle the response data as needed, such as displaying the translation
+        } catch (error) {
+          console.error('Translation Error:', error);
+        }
+
+      }
       
       //downloadBraille() {
         

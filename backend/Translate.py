@@ -7,10 +7,6 @@ import boto3
 s3 = boto3.resource('s3')
 
 def translate_to_braille(filename, pdf_password=None, language='english'):
-    # Print out bucket names
-    my_bucket = s3.Bucket('filestorageembraillerbucket185717-staging')
-    for my_bucket_object in my_bucket.objects.all():
-        print(my_bucket_object.key)
 
     translated = brl.translatePDF(filename, password = pdf_password, language = language) # Easy, right?
 
@@ -26,8 +22,7 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
 
     for page in translated:
         for group in page:
-            grouptxt = group['text']
-            
+            grouptxt = group['text']          
             # Convert to Unicode characters:
             unicode_brl = brl.toUnicodeSymbols(grouptxt, flatten=True)
             content += "\n\n" + unicode_brl
