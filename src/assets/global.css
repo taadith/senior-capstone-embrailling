@@ -7,7 +7,7 @@ body {
 
 button {
     transition: all .5s ease;
-    color: #fff;
+    color: lightgrey;
     border: 2px solid darkgrey;
     font-family:'Montserrat', sans-serif;
     text-transform: uppercase;
