@@ -123,8 +123,7 @@
   .textarea-button {
     transition: all .5s ease;
     color: lightgrey;
-    border: solid darkgrey;
-    border-radius: 4px;
+    border: solid rgba(255, 255, 255, 0);
     border-width: 1px;
     font-family:'Montserrat', sans-serif;
     text-transform: uppercase;
@@ -137,8 +136,10 @@
   }
 
 .textarea-button:hover {
-    color: #000;
-    background-color: darkgrey;
+    background: none;
+    border: solid darkgrey;
+    border-radius: 4px;
+    border-width: 1px;
 }
 
 #translate-button{
