@@ -54,3 +54,4 @@ amplifytools.xcconfig
 # misc
 *.pdf
 *.aux
+*.tex
