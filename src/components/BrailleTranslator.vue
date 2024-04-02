@@ -116,7 +116,7 @@
 
   .textarea-button-container {
     position: absolute;
-    right: 60px;
+    right: 55px;
     bottom: 20px;
   }
 
@@ -124,7 +124,8 @@
     transition: all .5s ease;
     color: lightgrey;
     border: solid darkgrey;
-    border-radius: 1px;
+    border-radius: 4px;
+    border-width: 2px;
     font-family:'Montserrat', sans-serif;
     text-transform: uppercase;
     text-align: center;
