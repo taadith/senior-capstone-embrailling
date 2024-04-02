@@ -24,3 +24,8 @@ button:hover {
     color: #000;
     background-color: darkgrey;
 }
+
+textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #858585;
+}

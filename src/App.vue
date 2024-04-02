@@ -49,8 +49,7 @@ export default {
 #signout {
   position: absolute;
   top: 20px;
-  right: 20px;
-  padding: 10px 15px;
+  right: 80px;
   cursor: pointer;
 }
 
