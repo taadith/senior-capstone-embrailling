@@ -125,7 +125,7 @@
     color: lightgrey;
     border: solid darkgrey;
     border-radius: 4px;
-    border-width: 2px;
+    border-width: 1px;
     font-family:'Montserrat', sans-serif;
     text-transform: uppercase;
     text-align: center;
