@@ -45,5 +45,3 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
 
     with open('output.pdf', 'rb') as data:
         s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
-
-
