@@ -95,7 +95,7 @@ export default {
           console.error('Translation Error:', error);
         }
 
-      }
+      },
 
     convertPdfToDwg() {
       console.log("Starting conversion process...");
