@@ -15,9 +15,6 @@ CORS(app)
 
 s3 = boto3.resource('s3')
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
 
 @app.route('/translate_to_braille', methods=['POST'])
 

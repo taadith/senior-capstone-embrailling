@@ -6,6 +6,7 @@
         <label class="textarea-button" for="file-upload">Upload PDF</label>
         <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
         <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate PDF</button>
+        <button class="textarea-button" id="#translate-text" @click="translateTextboxToBraille">Translate Text</button>
       </div>
     </div>
       <div class="output-section">
@@ -71,31 +72,31 @@ export default {
     //},
 
 
-      async translateTextboxToBraille(){
-        if(!(this.inputText.trim().length > 0)){
-          alert('Please enter text first.')
-          return;
-        }
+    async translateTextboxToBraille(){
+      if(!(this.inputText.trim().length > 0)){
+        alert('Please enter text first.')
+        return;
+      }
 
-        const formData = new FormData();
-        formData.append('text', this.inputText);
-        console.log(this.inputText);
+      const formData = new FormData();
+      formData.append('text', this.inputText);
+      console.log(this.inputText);
 
-        this.inputText = '';
+      this.inputText = '';
 
-        try {
-          const response = await axios.post('http://127.0.0.1:5000/translate_textbox_to_braille', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          console.log('Translation Success:', response.data);
-          // Handle the response data as needed, such as displaying the translation
-        } catch (error) {
-          console.error('Translation Error:', error);
-        }
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/translate_textbox_to_braille', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('Translation Success:', response.data);
+        // Handle the response data as needed, such as displaying the translation
+      } catch (error) {
+        console.error('Translation Error:', error);
+      }
 
-      },
+    },
 
     convertPdfToDwg() {
       console.log("Starting conversion process...");
