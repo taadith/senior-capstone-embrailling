@@ -70,6 +70,33 @@ export default {
     //  window.location.href = '/api/download'; // Adjust this if your Flask app's URL structure is different
     //},
 
+
+      async translateTextboxToBraille(){
+        if(!(this.inputText.trim().length > 0)){
+          alert('Please enter text first.')
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('text', this.inputText);
+        console.log(this.inputText);
+
+        this.inputText = '';
+
+        try {
+          const response = await axios.post('http://127.0.0.1:5000/translate_textbox_to_braille', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          console.log('Translation Success:', response.data);
+          // Handle the response data as needed, such as displaying the translation
+        } catch (error) {
+          console.error('Translation Error:', error);
+        }
+
+      }
+
     convertPdfToDwg() {
       console.log("Starting conversion process...");
 
@@ -80,6 +107,7 @@ export default {
 
       const formData = new FormData();
       formData.append('file', this.selectedPdfFile);
+
       
       console.log("Sending request to Flask...");
       fetch('http://127.0.0.1:5000/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
