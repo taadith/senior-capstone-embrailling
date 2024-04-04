@@ -11,7 +11,6 @@
     </div>
       <div class="output-section">
         <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-        <!-- <button @click="downloadPDF">Download PDF</button> -->
         <input type="file" @change="handleFileChange" accept=".pdf" />
         <div class="textarea-button-container">
           <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download Translated PDF</button>
@@ -162,21 +161,6 @@ export default {
       }
     },
 
-    // async startConversion() {
-    //   try {
-    //     const response = await fetch('http://127.0.0.1:5000/convert_to_dwg', { method: 'POST' });
-    //     const data = await response.json();
-    //     this.jobId = data.jobId; // Update jobId with the value received from the server
-    //   } catch (error) {
-    //     console.error('Error starting conversion:', error);
-    //   }
-    // },
-
-    //setJobId(id) {
-      //this.jobId = id;
-      //console.log("Job ID set:", this.jobId);
-    //},
-
     downloadDwg(jobId) {
       console.log("Attempting to download DWG file for Job ID:", jobId);
       if (!jobId) {
@@ -265,10 +249,6 @@ textarea {
 
 #translate-button{
 border-bottom-right-radius: 10px;
-}
-
-input[type="file"] {
-  display: none;
 }
 
 .download-button {

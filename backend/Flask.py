@@ -15,7 +15,6 @@ CORS(app)
 
 s3 = boto3.resource('s3')
 
-
 @app.route('/translate_to_braille', methods=['POST'])
 
 def translate_to_braille_endpoint():
@@ -34,30 +33,6 @@ def translate_to_braille_endpoint():
         translated_content = translate_to_braille(filepath)
 
         return jsonify({'translatedContent': translated_content})
-
-# def upload_file():
-#     if 'file' not in request.files:
-#         return 'No file part', 400
-#     file = request.files['file']
-#     if file.filename == '':
-#         return 'No selected file', 400
-#     if file:
-#         filename = secure_filename(file.filename)
-#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#         file.save(filepath)
-#         return 'File uploaded successfully', 200
-
-# @app.route('/download', methods=['GET'])
-# def download_file():
-#     # Define the directory where 'output.pdf' is located
-#     directory = os.getcwd()  # Assuming 'output.pdf' is in the current working directory
-#     filename='output.pdf'
-#     print("Serving file from directory:", directory)
-#     print("Filename:", filename)
-#     try:
-#         return send_from_directory(directory, filename=filename, as_attachment=True)
-#     except FileNotFoundError:
-#         return 'File not found.', 404
 
 @app.route('/translate_textbox_to_braille', methods=['POST'])
 def translate_textbox_to_braille():
