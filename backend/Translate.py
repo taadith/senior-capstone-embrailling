@@ -2,6 +2,7 @@
 import pybrl as brl
 import subprocess
 import boto3
+import os
 
 
 s3 = boto3.resource('s3')
@@ -39,5 +40,3 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
 
     with open('output.pdf', 'rb') as data:
         s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
-
-
