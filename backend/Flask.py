@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from Translate import translate_to_braille
 import os
 import requests
-from werkzeug.utils import secure_filename
+# this seems extra, already defined in line 3 - from werkzeug.utils import secure_filename
 # import subprocess
 
 app = Flask(__name__)
