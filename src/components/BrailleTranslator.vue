@@ -2,17 +2,18 @@
   <div class="braille-translator">
     <div class="input-section">
       <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
-      <div class="file-input">
-        <input type="file" @change="handleFileUpload" />
-        <button @click="translateToBraille">Translate</button>
+      <div class="textarea-button-container">
+        <label class="textarea-button" for="file-upload">Upload PDF</label>
+        <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
+        <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate</button>
       </div>
     </div>
       <div class="output-section">
-          <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-          <!-- <button @click="downloadPDF">Download PDF</button> -->
-          <input type="file" @change="handleFileChange" accept=".pdf" />
-          <button @click="convertPdfToDwg">Convert PDF to DWG</button>
-          <button @click="downloadDwg(jobId)">Download DWG File</button>
+        <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
+<!-- <button @click="downloadPDF">Download PDF</button> -->
+        <input type="file" @change="handleFileChange" accept=".pdf" />
+        <button @click="convertPdfToDwg">Convert PDF to DWG</button>
+        <button @click="downloadDwg(jobId)">Download DWG File</button>
           <!-- <button @click="translateToBraille" class="download-button">Translate to Braille</button> -->
       </div>
   </div>
@@ -176,17 +177,15 @@ export default {
 }
 
 .input-section, .output-section {
+  position: relative;
   width: 45%;
 }
 
 .text-input,
 .text-output,
-.file-input,
 .download-button {
   width: 100%;
   max-width: 600px;
-  margin: 10px;
-  padding: 15px;
   border: none;
   border-radius: 5px;
 }
@@ -202,9 +201,48 @@ export default {
   resize: none; /* Disables resize handle */
 }
 
-.file-input {
-  background-color: #2a2a2a;
-  color: #ffffff;
+textarea {
+  width: calc(100% - 40px);
+  height: 150px;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.textarea-button-container {
+  position: absolute;
+  right: 55px;
+  bottom: 20px;
+}
+
+.textarea-button {
+  transition: all .5s ease;
+  color: lightgrey;
+  border: solid rgba(255, 255, 255, 0);
+  border-width: 1px;
+  font-family:'Montserrat', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  font-size: 14px;
+  padding: 10px;
+  margin: 5px;
+  outline: none;
+}
+
+.textarea-button:hover {
+  background: none;
+  border: solid darkgrey;
+  border-radius: 4px;
+  border-width: 1px;
+}
+
+#translate-button{
+border-bottom-right-radius: 10px;
+}
+
+input[type="file"] {
+  display: none;
 }
 
 .download-button {
