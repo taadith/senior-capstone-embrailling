@@ -11,8 +11,10 @@
     </div>
       <div class="output-section">
         <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-        <!-- <button @click="downloadPDF">Download PDF</button> -->        
+        <!-- <button @click="downloadPDF">Download PDF</button> -->
+        <input type="file" @change="handleFileChange" accept=".pdf" />
         <div class="textarea-button-container">
+          <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download Translated PDF</button>
           <label class="textarea-button" for="file-dwg">Upload PDF</label>
           <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
           <button class="textarea-button" @click="convertPdfToDwg">Convert PDF to DWG</button>
@@ -69,10 +71,23 @@ export default {
       }
     },
     
-    //downloadPDF() {
-    // Fetch the file from the Flask endpoint
-    //  window.location.href = '/api/download'; // Adjust this if your Flask app's URL structure is different
-    //},
+    downloadPDF() {
+      const url = 'http://127.0.0.1:5000/download_pdf'; // Update with your Flask server URL
+      axios.get(url, {
+        responseType: 'blob', // Set the response type to blob to handle binary data
+      })
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'donwload-success.pdf'); // Specify the file name
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(error => {
+        console.error('Error downloading PDF:', error);
+      });
+    },
 
 
     async translateTextboxToBraille(){

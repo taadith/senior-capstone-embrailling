@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from Translate import translate_to_braille # Adjust the import statement as needed
@@ -34,7 +34,6 @@ def translate_to_braille_endpoint():
         translated_content = translate_to_braille(filepath)
 
         return jsonify({'translatedContent': translated_content})
-
 
 # def upload_file():
 #     if 'file' not in request.files:
@@ -172,6 +171,11 @@ def download_dwg_endpoint(job_id):
     else:
         return 'File not found.', 404
 
+
+@app.route('/download_pdf', methods=['GET'])
+def download_pdf():
+    pdf_path = 'output.pdf'  # Update with the path to your PDF file
+    return send_file(pdf_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
