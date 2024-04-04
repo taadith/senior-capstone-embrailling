@@ -215,8 +215,8 @@ export default {
 }
 
 .text-input,
-.text-output,
-.download-button {
+.text-output {
+  height: 80%;
   width: 100%;
   max-width: 600px;
   border: none;
@@ -243,9 +243,7 @@ textarea {
 }
 
 .textarea-button-container {
-  position: absolute;
-  right: 55px;
-  bottom: 20px;
+  margin-top: auto;
 }
 
 
