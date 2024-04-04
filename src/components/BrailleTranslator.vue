@@ -62,6 +62,7 @@ export default {
         });
         console.log('Translation Success:', response.data);
         // Handle the response data as needed, such as displaying the translation
+        this.brailleOutput = response.data['translatedContent'];
       } catch (error) {
         console.error('Translation Error:', error);
       }
@@ -93,6 +94,8 @@ export default {
         });
         console.log('Translation Success:', response.data);
         // Handle the response data as needed, such as displaying the translation
+        console.log(response.data[1]['brailleUnicode']);
+        this.brailleOutput = response.data[1]['brailleUnicode'];
       } catch (error) {
         console.error('Translation Error:', error);
       }

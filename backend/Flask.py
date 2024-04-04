@@ -90,6 +90,8 @@ def translate_textbox_to_braille():
 
     unicode_braille = brl.toUnicodeSymbols(translated_text, flatten=True)
     content = unicode_braille
+
+    print(content)
     
     # Create the new TeX
     output_tex = tex.replace("%%% Content will go here %%%", content)
@@ -104,7 +106,7 @@ def translate_textbox_to_braille():
     with open('output.pdf', 'rb') as data:
         s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
 
-    return jsonify({'translatedText': translated_text})
+    return jsonify({'translatedText': translated_text},{'brailleUnicode': content})
 
 def convert_pdf_to_dwg(file_path):
     zamzar_api_key = "f3f58a14d91cf86b356f18a99bc795ef1124d2af"
