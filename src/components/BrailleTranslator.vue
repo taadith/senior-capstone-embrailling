@@ -79,6 +79,10 @@ export default {
         alert('Please enter text first.')
         return;
       }
+      //this.$toast.open('You did it!');
+      const $toast = useToast();
+      this.$toast.open('You did it!');
+
 
       const formData = new FormData();
       formData.append('text', this.inputText);
