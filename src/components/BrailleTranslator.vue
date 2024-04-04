@@ -5,7 +5,7 @@
       <div class="textarea-button-container">
         <label class="textarea-button" for="file-upload">Upload PDF</label>
         <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
-        <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate</button>
+        <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate PDF</button>
       </div>
     </div>
       <div class="output-section">
@@ -215,27 +215,6 @@ textarea {
   bottom: 20px;
 }
 
-.textarea-button {
-  transition: all .5s ease;
-  color: lightgrey;
-  border: solid rgba(255, 255, 255, 0);
-  border-width: 1px;
-  font-family:'Montserrat', sans-serif;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1;
-  font-size: 14px;
-  padding: 10px;
-  margin: 5px;
-  outline: none;
-}
-
-.textarea-button:hover {
-  background: none;
-  border: solid darkgrey;
-  border-radius: 4px;
-  border-width: 1px;
-}
 
 #translate-button{
 border-bottom-right-radius: 10px;

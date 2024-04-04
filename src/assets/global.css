@@ -29,3 +29,26 @@ textarea:focus {
     outline: none !important;
     box-shadow: 0 0 10px #858585;
 }
+
+.textarea-button {
+    transition: all .5s ease;
+    color: lightgrey;
+    border: solid rgba(255, 255, 255, 0);
+    border-width: 1px;
+    font-family:'Montserrat', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px;
+    outline: none;
+}
+  
+.textarea-button:hover {
+    background: none;
+    color: lightgray;
+    border: solid darkgrey;
+    border-radius: 4px;
+    border-width: 1px;
+}
