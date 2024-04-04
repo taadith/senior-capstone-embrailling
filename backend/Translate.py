@@ -19,7 +19,7 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
         tex = f.read()
 
     # Concatenate all the text. 
-    content = ""
+    content = ''
 
     for page in translated:
         for group in page:
@@ -40,3 +40,5 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
 
     with open('output.pdf', 'rb') as data:
         s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
+
+    return content
