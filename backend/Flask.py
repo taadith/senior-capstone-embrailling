@@ -8,6 +8,7 @@ import subprocess
 import requests
 import pybrl as brl
 import boto3
+import PyPDF2
 
 
 app = Flask(__name__)
@@ -134,7 +135,10 @@ def convert_to_dwg_endpoint():
         filepath = os.path.join(filename)
         file.save(filepath)
 
-        job_id = convert_pdf_to_dwg(filepath)
+        #Need to reflect PDF before sending to conversion
+        relfect_pdf(filepath, 'reflected-input.pdf')
+
+        job_id = convert_pdf_to_dwg('reflected-input.pdf')
         return jsonify({'jobId': job_id})
 
 
@@ -176,6 +180,22 @@ def download_dwg_endpoint(job_id):
 def download_pdf():
     pdf_path = 'output.pdf'  # Update with the path to your PDF file
     return send_file(pdf_path, as_attachment=True)
+
+
+def relfect_pdf(input_path, output_path):
+    with open(input_path, 'rb') as input_file:
+        pdf_reader = PyPDF2.PdfReader(input_file)
+        pdf_writer = PyPDF2.PdfWriter()
+
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            # Reflect horizontally
+            page.scale(-1, 1)
+            # Add the reflected page to the new PDF
+            pdf_writer.add_page(page)
+
+        with open(output_path, 'wb') as output_file:
+            pdf_writer.write(output_file)
 
 if __name__ == '__main__':
     app.run(debug=True)
