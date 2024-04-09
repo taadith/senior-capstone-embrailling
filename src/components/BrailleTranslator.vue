@@ -167,6 +167,7 @@ export default {
       if (files.length > 0) {
         this.selectedPdfFile = files[0];
         console.log("File selected:", this.selectedPdfFile.name);
+        this.$notify({type: "alert", text: "File selected."});
       } else {
         this.selectedPdfFile = null;
       }

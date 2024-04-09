@@ -59,6 +59,7 @@ textarea:focus {
     padding: 10px;
     font-size: 25px;
     border-radius: 10px;
+    text-align: center;
     color: #101010;
   
     background: #44a4fc;
