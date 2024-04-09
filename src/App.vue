@@ -1,6 +1,6 @@
 <template>
   <header id="header">
-    <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png">
+    <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png" aria-hidden="true">
     <Authenticator :social-providers="['google']">
      <template v-slot="{ signOut }">
         <button @click="signOut" id="signout" class="button">Sign Out</button>
@@ -12,6 +12,7 @@
   </header>
   <notifications position="top left" width=30% max=4 classes="notif" />
 </template>
+
 <script>
 import BrailleTranslator from './components/BrailleTranslator.vue';
 

@@ -9,7 +9,7 @@
       </div>
     </div>
       <div class="output-section">
-        <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
+        <textarea id="braille-output" v-model="brailleOutput" readonly class="text-output" aria-label="Braille Output"></textarea>
         <!-- <input type="file" @change="handleFileChange" accept=".pdf" /> -->
         <div class="textarea-button-container">
           <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
