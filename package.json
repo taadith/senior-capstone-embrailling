@@ -10,7 +10,7 @@
   "dependencies": {
     "@aws-amplify/ui-vue": "^4.2.3",
     "@kyvg/vue3-notification": "^3.2.1",
-    "aws-amplify": "^6.0.21",
+    "aws-amplify": "^6.0.27",
     "axios": "^1.6.7",
     "core-js": "^3.8.3",
     "crypto-browserify": "^3.12.0",

@@ -1,33 +1,18 @@
 <template>
-  <header id="header">
     <img id="logo" alt="Embraillers logo" src="./assets/logo_dome.png" aria-hidden="true">
-    <Authenticator :social-providers="['google']">
-     <template v-slot="{ signOut }">
-        <button @click="signOut" id="signout" class="button">Sign Out</button>
-          <div id="app">
-            <BrailleTranslator />
-          </div>
-     </template>
-    </Authenticator>
-  </header>
+      <div id="app">
+        <BrailleTranslator />
+      </div>
   <notifications position="top left" width=30% max=4 classes="notif" />
 </template>
 
 <script>
 import BrailleTranslator from './components/BrailleTranslator.vue';
 
-import { Authenticator } from "@aws-amplify/ui-vue";
-import "@aws-amplify/ui-vue/styles.css";
-
-import { Amplify } from 'aws-amplify';
-import config from './amplifyconfiguration.json';
-Amplify.configure(config);
-
 export default {
   name: 'App',
   components: {
     BrailleTranslator,
-    Authenticator
   }
 };
 </script>
