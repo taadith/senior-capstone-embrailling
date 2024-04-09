@@ -10,6 +10,7 @@
      </template>
     </Authenticator>
   </header>
+  <notifications />
 </template>
 <script>
 import BrailleTranslator from './components/BrailleTranslator.vue';

@@ -73,16 +73,13 @@ export default {
     //  window.location.href = '/api/download'; // Adjust this if your Flask app's URL structure is different
     //},
 
-
     async translateTextboxToBraille(){
       if(!(this.inputText.trim().length > 0)){
         alert('Please enter text first.')
         return;
       }
-      //this.$toast.open('You did it!');
-      const $toast = useToast();
-      this.$toast.open('You did it!');
 
+      this.$notify("Hello user!");
 
       const formData = new FormData();
       formData.append('text', this.inputText);
