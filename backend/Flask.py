@@ -7,14 +7,12 @@ import os
 import subprocess
 import requests
 import pybrl as brl
-import boto3
 import PyPDF2
 
 
 app = Flask(__name__)
 CORS(app)
 
-s3 = boto3.resource('s3')
 
 @app.route('/translate_to_braille', methods=['POST'])
 
@@ -77,9 +75,6 @@ def translate_textbox_to_braille():
 
     subprocess.run(['xelatex', 'output.tex'], check=True)
     # print("PDF generated successfully.")
-
-    with open('output.pdf', 'rb') as data:
-        s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
 
     return jsonify({'translatedText': translated_text},{'brailleUnicode': content})
 
