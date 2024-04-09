@@ -10,7 +10,7 @@
      </template>
     </Authenticator>
   </header>
-  <notifications />
+  <notifications position="top left" width=30% max=4 classes="notif" />
 </template>
 <script>
 import BrailleTranslator from './components/BrailleTranslator.vue';
