@@ -50,7 +50,7 @@ export default {
   
     async translateToBraille() {
       if (!this.selectedFile) {
-        alert('Please select a file first.');
+        this.$notify({type: "error", text: "Please select a file first!"});
         return;
       }
 
@@ -63,10 +63,12 @@ export default {
           },
         });
         console.log('Translation Success:', response.data);
+        this.$notify({type: "success", text: "Translation complete!"});
         // Handle the response data as needed, such as displaying the translation
         this.brailleOutput = response.data['translatedContent'];
       } catch (error) {
         console.error('Translation Error:', error);
+        this.$notify({type: "error", text: "Translation error."});
       }
     },
     
@@ -82,18 +84,21 @@ export default {
         link.setAttribute('download', 'donwload-success.pdf'); // Specify the file name
         document.body.appendChild(link);
         link.click();
+        this.$notify({type: "success", text: "PDF downloaded!"});
       })
       .catch(error => {
         console.error('Error downloading PDF:', error);
+        this.$notify({type: "error", text: "Error downloading PDF."});
       });
     },
 
-
     async translateTextboxToBraille(){
       if(!(this.inputText.trim().length > 0)){
-        alert('Please enter text first.')
+        this.$notify({type: "error", text: "Please enter text first!"});
         return;
       }
+
+      this.$notify({type: "alert", text: "Translating text to braille..."});
 
       const formData = new FormData();
       formData.append('text', this.inputText);
@@ -108,11 +113,13 @@ export default {
           },
         });
         console.log('Translation Success:', response.data);
+        this.$notify({type: "success", text: "Translation complete!"});
         // Handle the response data as needed, such as displaying the translation
         console.log(response.data[1]['brailleUnicode']);
         this.brailleOutput = response.data[1]['brailleUnicode'];
       } catch (error) {
         console.error('Translation Error:', error);
+        this.$notify({type: "error", text: "Translation error."});
       }
 
     },
@@ -121,9 +128,11 @@ export default {
       console.log("Starting conversion process...");
 
       if (!this.selectedPdfFile) {
-        alert("Please select a PDF file first.");
+        this.$notify({type: "error", text: "Please select a PDF first!"});
         return;
       }
+
+      this.$notify({type: "alert", text: "Starting conversion..."});
 
       const formData = new FormData();
       formData.append('file', this.selectedPdfFile);
@@ -144,10 +153,12 @@ export default {
           this.jobId = data.jobId;
         } else {
           console.error('Failed to start conversion:', data);
+          this.$notify({type: "error", text: "Conversion failed."});
         }
       })
       .catch(error => {
         console.error('Error:', error);
+        this.$notify({type: "error", text: "Conversion error."});
       });
     },
 
@@ -156,6 +167,7 @@ export default {
       if (files.length > 0) {
         this.selectedPdfFile = files[0];
         console.log("File selected:", this.selectedPdfFile.name);
+        this.$notify({type: "alert", text: "File selected."});
       } else {
         this.selectedPdfFile = null;
       }
@@ -164,7 +176,7 @@ export default {
     downloadDwg(jobId) {
       console.log("Attempting to download DWG file for Job ID:", jobId);
       if (!jobId) {
-        alert("Job ID is required for downloading the DWG file.");
+        this.$notify({type: "error", text: "Create a DWG first!"});
         return;
       }
 
@@ -174,6 +186,7 @@ export default {
       fetch(url)
         .then(response => {
           if (!response.ok) {
+            this.$notify({type: "warn", text: "DWG isn't finished converting!"});
             throw new Error(`Server returned ${response.status} when trying to download DWG file.`);
           }
           return response.blob();
@@ -188,6 +201,7 @@ export default {
           link.click();
           link.parentNode.removeChild(link);
           window.URL.revokeObjectURL(downloadUrl);
+          this.$notify({type: "success", text: "DWG downloaded!"});
         })
         .catch(error => {
           console.error('Download failed:', error);
