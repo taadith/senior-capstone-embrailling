@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from Translate import translate_to_braille # Adjust the import statement as needed
@@ -8,13 +8,13 @@ import subprocess
 import requests
 import pybrl as brl
 import boto3
+import PyPDF2
 
 
 app = Flask(__name__)
 CORS(app)
 
 s3 = boto3.resource('s3')
-
 
 @app.route('/translate_to_braille', methods=['POST'])
 
@@ -34,31 +34,6 @@ def translate_to_braille_endpoint():
         translated_content = translate_to_braille(filepath)
 
         return jsonify({'translatedContent': translated_content})
-
-
-# def upload_file():
-#     if 'file' not in request.files:
-#         return 'No file part', 400
-#     file = request.files['file']
-#     if file.filename == '':
-#         return 'No selected file', 400
-#     if file:
-#         filename = secure_filename(file.filename)
-#         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#         file.save(filepath)
-#         return 'File uploaded successfully', 200
-
-# @app.route('/download', methods=['GET'])
-# def download_file():
-#     # Define the directory where 'output.pdf' is located
-#     directory = os.getcwd()  # Assuming 'output.pdf' is in the current working directory
-#     filename='output.pdf'
-#     print("Serving file from directory:", directory)
-#     print("Filename:", filename)
-#     try:
-#         return send_from_directory(directory, filename=filename, as_attachment=True)
-#     except FileNotFoundError:
-#         return 'File not found.', 404
 
 @app.route('/translate_textbox_to_braille', methods=['POST'])
 def translate_textbox_to_braille():
@@ -135,7 +110,10 @@ def convert_to_dwg_endpoint():
         filepath = os.path.join(filename)
         file.save(filepath)
 
-        job_id = convert_pdf_to_dwg(filepath)
+        #Need to reflect PDF before sending to conversion
+        relfect_pdf(filepath, 'reflected-input.pdf')
+
+        job_id = convert_pdf_to_dwg('reflected-input.pdf')
         return jsonify({'jobId': job_id})
 
 
@@ -172,6 +150,27 @@ def download_dwg_endpoint(job_id):
     else:
         return 'File not found.', 404
 
+
+@app.route('/download_pdf', methods=['GET'])
+def download_pdf():
+    pdf_path = 'output.pdf'  # Update with the path to your PDF file
+    return send_file(pdf_path, as_attachment=True)
+
+
+def relfect_pdf(input_path, output_path):
+    with open(input_path, 'rb') as input_file:
+        pdf_reader = PyPDF2.PdfReader(input_file)
+        pdf_writer = PyPDF2.PdfWriter()
+
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            # Reflect horizontally
+            page.scale(-1, 1)
+            # Add the reflected page to the new PDF
+            pdf_writer.add_page(page)
+
+        with open(output_path, 'wb') as output_file:
+            pdf_writer.write(output_file)
 
 if __name__ == '__main__':
     app.run(debug=True)
