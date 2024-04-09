@@ -20,7 +20,7 @@ button {
     border-radius: 4px;
 }
 
-button:hover {
+button:hover, button:focus{
     color: #000;
     background-color: darkgrey;
 }
@@ -45,7 +45,7 @@ textarea:focus {
     outline: none;
 }
   
-.textarea-button:hover {
+.textarea-button:hover, .textarea-button:focus {
     background: none;
     color: lightgray;
     border: solid darkgrey;
