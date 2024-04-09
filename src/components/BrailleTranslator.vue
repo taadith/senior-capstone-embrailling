@@ -3,9 +3,8 @@
     <div class="input-section">
       <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
       <div class="textarea-button-container">
-        <label class="textarea-button" for="file-upload">Upload PDF</label>
+        <label class="textarea-button" for="file-upload">Translate PDF</label>
         <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
-        <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate PDF</button>
         <button class="textarea-button" id="#translate-text" @click="translateTextboxToBraille">Translate Text</button>
       </div>
     </div>
@@ -13,10 +12,8 @@
         <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
         <!-- <input type="file" @change="handleFileChange" accept=".pdf" /> -->
         <div class="textarea-button-container">
-          <label class="textarea-button" for="file-dwg">Upload PDF</label>
+          <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
           <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-          <button class="textarea-button" @click="convertPdfToDwg">PDF to DWG</button>
-          <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download PDF</button>
           <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG</button>
         </div>
       </div>
@@ -46,7 +43,7 @@ export default {
   methods: {
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0];
-      this.$notify({type: "alert", text: "File selected."});
+      this.translateToBraille();
     },
   
     async translateToBraille() {
@@ -67,6 +64,7 @@ export default {
         this.$notify({type: "success", text: "Translation complete!"});
         // Handle the response data as needed, such as displaying the translation
         this.brailleOutput = response.data['translatedContent'];
+        this.downloadPDF();
       } catch (error) {
         console.error('Translation Error:', error);
         this.$notify({type: "error", text: "Translation error."});
@@ -85,7 +83,6 @@ export default {
         link.setAttribute('download', 'donwload-success.pdf'); // Specify the file name
         document.body.appendChild(link);
         link.click();
-        this.$notify({type: "success", text: "PDF downloaded!"});
       })
       .catch(error => {
         console.error('Error downloading PDF:', error);
@@ -118,6 +115,7 @@ export default {
         // Handle the response data as needed, such as displaying the translation
         console.log(response.data[1]['brailleUnicode']);
         this.brailleOutput = response.data[1]['brailleUnicode'];
+        this.downloadPDF();
       } catch (error) {
         console.error('Translation Error:', error);
         this.$notify({type: "error", text: "Translation error."});
@@ -168,7 +166,7 @@ export default {
       if (files.length > 0) {
         this.selectedPdfFile = files[0];
         console.log("File selected:", this.selectedPdfFile.name);
-        this.$notify({type: "alert", text: "File selected."});
+        this.convertPdfToDwg();
       } else {
         this.selectedPdfFile = null;
       }
