@@ -11,13 +11,13 @@
     </div>
       <div class="output-section">
         <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-        <input type="file" @change="handleFileChange" accept=".pdf" />
+        <!-- <input type="file" @change="handleFileChange" accept=".pdf" /> -->
         <div class="textarea-button-container">
-          <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download Translated PDF</button>
           <label class="textarea-button" for="file-dwg">Upload PDF</label>
           <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-          <button class="textarea-button" @click="convertPdfToDwg">Convert PDF to DWG</button>
-          <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG File</button>
+          <button class="textarea-button" @click="convertPdfToDwg">PDF to DWG</button>
+          <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download PDF</button>
+          <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG</button>
         </div>
       </div>
   </div>
