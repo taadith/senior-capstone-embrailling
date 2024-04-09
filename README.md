@@ -9,7 +9,7 @@ bash setup.sh
 This script runs these commands:
 ```
 npm install
-sudo pip install -r src/components/requirements.txt
+sudo pip install -r backend/requirements.txt
 sudo apt-get update
 sudo apt-get install -y texlive texlive-xetex
 ```

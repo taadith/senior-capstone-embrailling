@@ -9,7 +9,7 @@ npm install
 
 # Install Python packages from requirements.txt
 tput setaf 2; echo "Installing Python packages...$(tput sgr0)"
-sudo pip install -r src/components/requirements.txt
+sudo pip install -r backend/requirements.txt
 
 # Update package lists for upgrades and new package installations
 tput setaf 2; echo "Updating package lists...$(tput sgr0)"
