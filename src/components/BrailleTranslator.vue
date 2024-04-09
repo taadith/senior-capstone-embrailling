@@ -46,6 +46,7 @@ export default {
   methods: {
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0];
+      this.$notify({type: "alert", text: "File selected."});
     },
   
     async translateToBraille() {
