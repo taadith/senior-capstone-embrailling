@@ -11,6 +11,9 @@ module.exports = defineConfig({
       title: 'The Embrailler',
     },
   },
+  devServer: {
+    allowedHosts: ['.herokuapp.com'],
+  },
   configureWebpack: {
     resolve: {
       fallback: {
@@ -20,6 +23,6 @@ module.exports = defineConfig({
         stream: require.resolve('stream-browserify') // Adding fallback for 'stream'
       }
     }
-  }
+  },
 });
 
