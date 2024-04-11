@@ -10,20 +10,27 @@ import pybrl as brl
 import PyPDF2
 
 
-app = Flask(__name__, static_folder='dist/static')
+app = Flask(__name__, static_folder='dist')
 CORS(app)
 
-@app.route('/')
-def serve_vue_app():
-    return send_from_directory('dist', 'index.html')
+# @app.route('/')
+# def serve_vue_app():
+#     return send_from_directory('dist', 'index.html')
 
+# @app.route('/<path:path>')
+# def static_proxy(path):
+#     # send_static_file will guess the correct MIME type
+#     return app.send_static_file(os.path.join('dist', path))
+
+@app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def static_proxy(path):
-    # send_static_file will guess the correct MIME type
-    return app.send_static_file(os.path.join('dist', path))
+def catch_all(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/translate_to_braille', methods=['POST'])
-
 def translate_to_braille_endpoint():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
