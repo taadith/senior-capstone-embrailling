@@ -7,7 +7,6 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "start": "npm run serve",
-    "start-flask": "flask --app Flask.py run",
     "heroku-postbuild": "npm install --only=dev && npm run build"
   },
   "dependencies": {
