@@ -179,7 +179,7 @@ export default {
         return;
       }
 
-      const url = `http://127.0.0.1:5000/download_dwg/${jobId}`;
+      const url = `/download_dwg/${jobId}`;
 
       // Fetch the DWG file from the server
       fetch(url)
