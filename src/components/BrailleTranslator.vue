@@ -55,7 +55,7 @@ export default {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       try {
-        const response = await axios.post('http://127.0.0.1:5000/translate_to_braille', formData, {
+        const response = await axios.post('/translate_to_braille', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -72,7 +72,7 @@ export default {
     },
     
     downloadPDF() {
-      const url = 'http://127.0.0.1:5000/download_pdf'; // Update with your Flask server URL
+      const url = '/download_pdf'; // Update with your Flask server URL
       axios.get(url, {
         responseType: 'blob', // Set the response type to blob to handle binary data
       })
@@ -105,7 +105,7 @@ export default {
       this.inputText = '';
 
       try {
-        const response = await axios.post('http://127.0.0.1:5000/translate_textbox_to_braille', formData, {
+        const response = await axios.post('/translate_textbox_to_braille', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -138,7 +138,7 @@ export default {
 
       
       console.log("Sending request to Flask...");
-      fetch('http://127.0.0.1:5000/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
+      fetch('/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
         method: 'POST',
         body: formData,
       })
