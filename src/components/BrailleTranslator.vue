@@ -18,20 +18,20 @@
         <button class="textarea-button" id="#translate-text" @click="translateTextboxToBraille">Translate Text</button>
       </div>
     </div>
-      <div class="output-section">
+    <div class="output-section">
+      <div class="textarea-container">
         <textarea :style="{fontSize: fontSize}" id="braille-output" v-model="brailleOutput" readonly class="text-output" aria-label="Braille Output"></textarea>
-        <!-- <input type="file" @change="handleFileChange" accept=".pdf" /> -->
-        <div class="textarea-button-container">
-          <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
-          <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-        </div>
       </div>
+      <div class="textarea-button-container">
+        <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
+        <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 
-// Import any necessary libraries or helpers for PDF extraction and Braille translation
 import axios from 'axios';
 
 export default {
@@ -244,7 +244,7 @@ export default {
   height: 100vh;
   padding-top: 50px;
   background-color: #121212;
-  color: #ffffff;
+  color: lightgrey;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -255,22 +255,15 @@ export default {
 
 .text-input,
 .text-output {
-  height: 80%;
+  height: 300px;
   width: 100%;
   max-width: 600px;
   border: none;
   border-radius: 5px;
-}
-
-.text-input,
-.text-output {
-  width: 100%;
-  height: 300px;
-  margin-bottom: 15px; /* Space between text area and button */
   background-color: #1e1e1e;
-  color: #ffffff;
+  color: lightgrey;
   font-size: 16px;
-  resize: none; /* Disables resize handle */
+  resize: none;
 }
 
 textarea {
@@ -281,8 +274,9 @@ textarea {
   box-sizing: border-box;
 }
 
-.textarea-container {
-    position: relative;
+.textarea-button-container {
+  display: flex;
+  justify-content: center;
 }
 
 .font-size-selector {
@@ -295,24 +289,15 @@ textarea {
     cursor: pointer;
 }
 
-.textarea-button-container {
-  margin-top: auto;
+@media (max-width: 768px) {
+  .braille-translator {
+    flex-direction: column;
+    padding-top: 20px;
+  }
+
+  .input-section, .output-section {
+    width: 90%;
+  }
 }
 
-
-#translate-button{
-border-bottom-right-radius: 10px;
-}
-
-.download-button {
-  background-color: #2979ff;
-  color: #ffffff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.download-button:hover {
-  background-color: #5393ff;
-}
 </style>

@@ -4,10 +4,9 @@
         <button class="close-button" @click="toggleHelpPopup">X</button>
         <h2 class="help-heading">How to Use The Embrailler</h2>
         <p class="help-paragraph">
-          <span class="help-item">Translate PDF</span>: Select a PDF file to upload and then translate it to Braille.<br/><br/>
-          <span class="help-item">Translate Text</span>: Translate the text in the input box to Braille.<br/><br/>
-          <span class="help-item">Convert PDF to DWG</span>: Select a PDF file to upload and then convert it to DWG format.<br/><br/>
-          <span class="help-item">Download DWG</span>: Download the converted DWG file.<br/>
+          <span class="help-item">Translate PDF</span>: Select a PDF document to upload and then translate it to Braille. A PDF document will be automatically downloaded when finished.<br/><br/>
+          <span class="help-item">Translate Text</span>: Translate the text in the input box to Braille. A PDF document will be automatically downloaded when finished.<br/><br/>
+          <span class="help-item">Convert PDF to DWG</span>: Select a PDF document to upload and then convert it to DWG format.<br/><br/>
         </p>
         <!-- More detailed instructions here -->
     </div>
@@ -47,21 +46,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
 }
 
 #logo {
   display: block; 
   max-width: 200px; 
-  margin: 0 auto -200px; /* TODO: Figure out a better way to fix margins than using negative values */
-}
-
-#signout {
-  position: absolute;
-  top: 20px;
-  right: 80px;
-  cursor: pointer;
+  margin: 0 auto -200px;
 }
 
 .blur {
@@ -113,5 +104,11 @@ export default {
   background: transparent;
   color: white;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #logo {
+    display: none;
+  }
 }
 </style>
