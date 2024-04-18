@@ -14,7 +14,6 @@
         <div class="textarea-button-container">
           <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
           <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-          <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG</button>
         </div>
       </div>
   </div>
@@ -187,9 +186,10 @@ export default {
         fetch(url)
           .then(response => {
             if (!response.ok) {
-              this.$notify({type: "warn", text: "DWG isn't finished converting!"});
+              this.$notify({type: "warn", text: "Please wait..."});
               done = false;
             }
+            return response.blob();
           })
           .then(blob => {
             if (done)
@@ -211,7 +211,7 @@ export default {
             console.error('Download failed:', error);
             clearInterval(this.polling);
           });
-        }, 3000)
+        }, 5000)
     },
 
     pollAPI() {
