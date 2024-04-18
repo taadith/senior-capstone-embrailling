@@ -1,7 +1,17 @@
 <template>
   <div class="braille-translator">
     <div class="input-section">
-      <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+      <div class="textarea-container">
+        <textarea :style="{fontSize: fontSize}" v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+        <select class="font-size-selector" v-model="fontSize" aria-hidden="true">
+          <option value="12px">12px</option>
+          <option value="14px">14px</option>
+          <option value="16px">16px</option>
+          <option value="18px">18px</option>
+          <option value="20px">20px</option>
+          <option value="24px">24px</option>
+        </select>
+      </div>
       <div class="textarea-button-container">
         <label class="textarea-button" for="file-upload">Translate PDF</label>
         <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
@@ -9,7 +19,7 @@
       </div>
     </div>
       <div class="output-section">
-        <textarea id="braille-output" v-model="brailleOutput" readonly class="text-output" aria-label="Braille Output"></textarea>
+        <textarea :style="{fontSize: fontSize}" id="braille-output" v-model="brailleOutput" readonly class="text-output" aria-label="Braille Output"></textarea>
         <!-- <input type="file" @change="handleFileChange" accept=".pdf" /> -->
         <div class="textarea-button-container">
           <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
@@ -33,6 +43,7 @@ export default {
       selectedFile: null,
       selectedPdfFile: null,
       jobId: null,
+      fontSize: '16px',
     };
   },
 
@@ -268,6 +279,20 @@ textarea {
   margin: 10px;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.textarea-container {
+    position: relative;
+}
+
+.font-size-selector {
+    position: absolute;
+    top: -15px;
+    left: 50px;
+    border: none;
+    background: #121212;
+    color: lightgrey;
+    cursor: pointer;
 }
 
 .textarea-button-container {
