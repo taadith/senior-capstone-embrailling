@@ -24,7 +24,6 @@
         <div class="textarea-button-container">
           <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
           <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-          <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG</button>
         </div>
       </div>
   </div>
@@ -161,6 +160,7 @@ export default {
         if (data.jobId) {
           console.log('Conversion started, job ID:', data.jobId);
           this.jobId = data.jobId;
+          this.downloadDwg(this.jobId);
         } else {
           console.error('Failed to start conversion:', data);
           this.$notify({type: "error", text: "Conversion failed."});
@@ -192,30 +192,45 @@ export default {
 
       const url = `http://127.0.0.1:5000/download_dwg/${jobId}`;
 
-      // Fetch the DWG file from the server
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            this.$notify({type: "warn", text: "DWG isn't finished converting!"});
-            throw new Error(`Server returned ${response.status} when trying to download DWG file.`);
-          }
-          return response.blob();
-        })
-        .then(blob => {
-          // Create a new link element and trigger the download
-          const downloadUrl = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = downloadUrl;
-          link.setAttribute('download', 'output.dwg');
-          document.body.appendChild(link);
-          link.click();
-          link.parentNode.removeChild(link);
-          window.URL.revokeObjectURL(downloadUrl);
-          this.$notify({type: "success", text: "DWG downloaded!"});
-        })
-        .catch(error => {
-          console.error('Download failed:', error);
-        });
+      this.polling = setInterval(() => {
+        let done = true;
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              this.$notify({type: "warn", text: "Please wait..."});
+              done = false;
+            }
+            return response.blob();
+          })
+          .then(blob => {
+            if (done)
+            {
+              // Create a new link element and trigger the download
+              const downloadUrl = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              link.setAttribute('download', 'output.dwg');
+              document.body.appendChild(link);
+              link.click();
+              link.parentNode.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+              this.$notify({type: "success", text: "DWG downloaded!"});
+              clearInterval(this.polling);
+            }
+          })
+          .catch(error => {
+            console.error('Download failed:', error);
+            clearInterval(this.polling);
+          });
+        }, 5000)
+    },
+
+    pollAPI() {
+      return;
+    },
+
+    beforeDestroy() {
+      clearInterval(this.polling);
     },
   }
 };
