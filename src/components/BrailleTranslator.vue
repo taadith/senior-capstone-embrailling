@@ -183,25 +183,29 @@ export default {
       const url = `http://127.0.0.1:5000/download_dwg/${jobId}`;
 
       this.polling = setInterval(() => {
+        let done = true;
         fetch(url)
           .then(response => {
             if (!response.ok) {
               this.$notify({type: "warn", text: "DWG isn't finished converting!"});
-              return;
+              done = false;
             }
           })
           .then(blob => {
-            // Create a new link element and trigger the download
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.setAttribute('download', 'output.dwg');
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-            window.URL.revokeObjectURL(downloadUrl);
-            this.$notify({type: "success", text: "DWG downloaded!"});
-            clearInterval(this.polling);
+            if (done)
+            {
+              // Create a new link element and trigger the download
+              const downloadUrl = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              link.setAttribute('download', 'output.dwg');
+              document.body.appendChild(link);
+              link.click();
+              link.parentNode.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+              this.$notify({type: "success", text: "DWG downloaded!"});
+              clearInterval(this.polling);
+            }
           })
           .catch(error => {
             console.error('Download failed:', error);
