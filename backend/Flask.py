@@ -17,6 +17,13 @@ CORS(app)
 @app.route('/translate_to_braille', methods=['POST'])
 
 def translate_to_braille_endpoint():
+    """
+    Function is used to call the translate_to_braille function. The returned braille unicode is displayed on the front end.
+
+    
+    Returns:
+    Any: Return translated braille unicode, that is displayed on the vue application. 
+    """
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
@@ -35,6 +42,12 @@ def translate_to_braille_endpoint():
 
 @app.route('/translate_textbox_to_braille', methods=['POST'])
 def translate_textbox_to_braille():
+    """
+    Function is used to translate the received text into grade-2 unicode braille. Done by using pybrl translate function to translate the text, and texract xelatex to convert the .tex file to .pdf
+    
+    Returns:
+    Any: Return translated braille unicode, that is displayed on the vue application.
+    """
     print("Inside translate_textboxtobraille")
     
     form_data = request.form
@@ -79,6 +92,17 @@ def translate_textbox_to_braille():
     return jsonify({'translatedText': translated_text},{'brailleUnicode': content})
 
 def convert_pdf_to_dwg(file_path):
+    """
+    Function sends request to Zamzar API for file conversion. 
+    
+    Args:
+    file_path (str): path of uploaded input file.
+    
+    Returns:
+    Any: Return the job ID for the conversion.
+    """
+
+
     zamzar_api_key = "f3f58a14d91cf86b356f18a99bc795ef1124d2af"
     endpoint = "https://api.zamzar.com/v1/jobs"
     source_file = file_path
@@ -93,6 +117,14 @@ def convert_pdf_to_dwg(file_path):
 
 @app.route('/convert_to_dwg', methods=['POST'])
 def convert_to_dwg_endpoint():
+    """
+    Function is reflects the uploaded pdf using the reflect_pdf function and passes that into the convert_pdf_to_dwg function.
+
+        
+    Returns:
+    Any: Return the job ID for the conversion.
+    """
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
@@ -113,6 +145,18 @@ def convert_to_dwg_endpoint():
 
 
 def download_dwg(job_id):
+    """
+    Function downloads the converted dwg by querying the Zamzar API with the given job ID. 
+    
+    Args:
+    job_id (Any): jobId of the Zamzar conversion.
+    
+    Returns:
+    str: if successful, path of converted dwg file.
+    None: if unsuccessful, nothing is returned.
+    """
+
+
     zamzar_api_key = "f3f58a14d91cf86b356f18a99bc795ef1124d2af"
     endpoint = f"https://api.zamzar.com/v1/jobs/{job_id}"
     response = requests.get(endpoint, auth=(zamzar_api_key, ''))
@@ -137,6 +181,17 @@ def download_dwg(job_id):
 
 @app.route('/download_dwg/<int:job_id>', methods=['GET'])
 def download_dwg_endpoint(job_id):
+    """
+    Funtion downloads dwg onto users local machine, given the jobId of Zamzar conversion.
+    
+    Args:
+    job_id (Any): jobId of the Zamzar conversion.
+    
+    Returns:
+    File: if file, returns dwg file that is downloaded locally onto users machine.
+    str: if no file, return 404 'File not found' error.
+    """
+
     dwg_file_path = download_dwg(job_id)
     if dwg_file_path:
         directory = os.path.dirname(dwg_file_path)
@@ -148,11 +203,25 @@ def download_dwg_endpoint(job_id):
 
 @app.route('/download_pdf', methods=['GET'])
 def download_pdf():
+    """
+    Function downloads translated grade-2 unicode braille pdf onto users local machine.
+
+    
+    Returns:
+    File: returns pdf file that is downloaded locally onto users machine.
+    """
     pdf_path = 'output.pdf'  # Update with the path to your PDF file
     return send_file(pdf_path, as_attachment=True)
 
 
 def relfect_pdf(input_path, output_path):
+    """
+    Funtion reflects pdf file horizontally to be suitable for laser cutting methods. Uses the scale function from the PyPDF2 library.
+
+    Parameters:
+    input_path (str): file path of pdf that needs to be reflected.
+    output_path (str): file path of resulting reflected pdf.
+    """
     with open(input_path, 'rb') as input_file:
         pdf_reader = PyPDF2.PdfReader(input_file)
         pdf_writer = PyPDF2.PdfWriter()

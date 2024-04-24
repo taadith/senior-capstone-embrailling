@@ -31,6 +31,10 @@
 </template>
 
 <script>
+/**
+ * Vue Componenet: Braille Translator
+ * Description: This is the main application component. Each button present makes calls to the Flask API that we have implemented
+ */
 
 import axios from 'axios';
 
@@ -51,11 +55,21 @@ export default {
   },
 
   methods: {
+    /**
+     * Method: handleFileUpload
+     * Description: sets selected file to one user has uploaded
+     * @param {any} event
+     */
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0];
       this.translateToBraille();
     },
-  
+    
+    /**
+     * Method: translateToBraille
+     * Description: takes the selected pdf file from the user and calls the translate_to_braille endpoint. The file is passed to the Flask API as the form data.
+     * The braille unicode response is then displayed inside of the braille output textfield.
+     */
     async translateToBraille() {
       if (!this.selectedFile) {
         this.$notify({type: "error", text: "Please select a file first!"});
@@ -81,8 +95,13 @@ export default {
       }
     },
     
+    /**
+     * Method: downloadPDF
+     * Description: Calls the Flask API endpoint to intiate the local download of the translated pdf file. The API responds back with the translated file.
+     * After the response the file is downloaded locally under the name 'download-success.pdf' to the users downloads directory.
+     */
     downloadPDF() {
-      const url = 'http://127.0.0.1:5000/download_pdf'; // Update with your Flask server URL
+      const url = 'http://127.0.0.1:5000/download_pdf';
       axios.get(url, {
         responseType: 'blob', // Set the response type to blob to handle binary data
       })
@@ -100,6 +119,11 @@ export default {
       });
     },
 
+    /**
+     * Method: translateTextboxToBraille
+     * Description: takes the text inputted from the user and calls the translate_textbox_to_braille endpoint. The text is passed to the Flask API as the form data.
+     * The braille unicode response is then displayed inside of the braille output textfield.
+     */
     async translateTextboxToBraille(){
       if(!(this.inputText.trim().length > 0)){
         this.$notify({type: "error", text: "Please enter text first!"});
@@ -133,6 +157,11 @@ export default {
 
     },
 
+    /**
+     * Method: convertPdfToDwg
+     * Description: user uploads a pdf file that is then converted to dwg. This method calls the convert_to_dwg endpoint in the Flask API
+     * The uploaded pdf is sent as the form data.
+     */
     convertPdfToDwg() {
       console.log("Starting conversion process...");
 
@@ -172,6 +201,11 @@ export default {
       });
     },
 
+    /**
+     * Method: handleFileChange 
+     * Description: after user uploades a pdf file, the convertPdfToDwg method is called to initiate the file conversion.
+     * @param {any} event
+     */
     handleFileChange(event) {
       const files = event.target.files;
       if (files.length > 0) {
@@ -183,6 +217,12 @@ export default {
       }
     },
 
+    /**
+     * Method: downloadDwg
+     * Description: Using the jobId for the Zamzar conversion calls the download_dwg endpoint on the FlaskAPI.
+     * Constantly fetches and sees if the conversion has finished and displays appropriate notifications. 
+     * @param {any} jobId - jobId for Zamzar file conversion
+     */
     downloadDwg(jobId) {
       console.log("Attempting to download DWG file for Job ID:", jobId);
       if (!jobId) {
