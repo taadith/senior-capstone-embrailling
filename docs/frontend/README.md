@@ -21,7 +21,7 @@ All the frontend componenets are contained within the `src` folder.
 
 - [downloadPDF()](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L99): Calls the Flask API endpoint to intiate the local download of the translated pdf file. The API responds back with the translated file. After the response the file is downloaded locally under the name 'download-success.pdf' to the users downloads directory.
 
-- [translateTexboxToBraille](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L127): Takes the text inputted from the user and calls the translate_textbox_to_braille endpoint. The text is passed to the Flask API as the form data. The braille unicode response is then displayed inside of the braille output textfield.
+- [translateTexboxToBraille()](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L127): Takes the text inputted from the user and calls the translate_textbox_to_braille endpoint. The text is passed to the Flask API as the form data. The braille unicode response is then displayed inside of the braille output textfield.
 
 - [convertPdfToDwg()](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L165): User uploads a pdf file that is then converted to dwg. This method calls the convert_to_dwg endpoint in the Flask API. The uploaded pdf is sent as the form data.
 
