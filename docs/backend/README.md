@@ -41,7 +41,7 @@ The [pybrl](https://github.com/ant0nisk/pybrl) libarary is within our backend as
     - str: if successful, path of converted dwg file.
     - None: if unsuccessful, nothing is returned.
 
-- [download_dwg_endpoint](https://github.com/taadith/senior-capstone-embrailling/blob/8b15dfffa1c9067955687d1d6e6751a76e7b10a5/backend/Flask.py#L183):     Funtion downloads dwg onto users local machine, given the jobId of Zamzar conversion.
+- [download_dwg_endpoint()](https://github.com/taadith/senior-capstone-embrailling/blob/8b15dfffa1c9067955687d1d6e6751a76e7b10a5/backend/Flask.py#L183):     Funtion downloads dwg onto users local machine, given the jobId of Zamzar conversion.
     
     Args:
     - job_id (Any): jobId of the Zamzar conversion.
