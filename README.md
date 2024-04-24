@@ -5,10 +5,10 @@ Web app and associated API to convert english text or pdf to AutoCAD file contai
 ## Overview
 Vue.js frontend application that makes calls to Python Flask API backend, backend uses pybrl for braille translation and Zamzar for file conversion
 
-- [File Structure](https://github.com/taadith/senior-capstone-embrailling/edit/dev/README.md#file-structure)
+- [File Structure](#file-structure)
 - How to use
-  - [Online](https://github.com/taadith/senior-capstone-embrailling/edit/dev/README.md#online)
-  - [Local Setup](https://github.com/taadith/senior-capstone-embrailling/edit/dev/README.md#local-setup)
+  - [Online](#online)
+  - [Local Setup](local-setup)
 
 ## File Structure
 Code is split up into two main sections, Vue.js front end, and Flask API backend. 
