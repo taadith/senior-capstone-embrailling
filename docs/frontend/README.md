@@ -30,7 +30,7 @@ All the frontend componenets are contained within the `src` folder.
     Args:
     - {any}: event
 
- - [downloadDwg](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L226): Using the jobId for the Zamzar conversion calls the download_dwg endpoint on the FlaskAPI. Constantly fetches and sees if the conversion has finished and displays appropriate notifications.
+ - [downloadDwg(jobId)](https://github.com/taadith/senior-capstone-embrailling/blob/611ebc0c0c4d8f1519335a57e6f8dfabda8673bc/src/components/BrailleTranslator.vue#L226): Using the jobId for the Zamzar conversion calls the download_dwg endpoint on the FlaskAPI. Constantly fetches and sees if the conversion has finished and displays appropriate notifications.
 
     Args:
     - {any} jobId - jobId for Zamzar file conversion
