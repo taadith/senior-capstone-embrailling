@@ -1,6 +1,6 @@
 # TAMU Senior Capstone Project - Embrailling
 
-Website to convert english text or pdf to AutoCAD file containing grade-2 braille, for use in TAMU laser cutter that produces physical braille on capsule paper.
+Website to convert english text or pdf to AutoCAD file containing grade-2 braille, for use in TAMU laser cutter to produce physical braille on capsule paper.
 
 ## Overview
 Vue.js frontend application that makes calls to Python Flask API backend, backend uses pybrl for braille translation and Zamzar for file conversion
