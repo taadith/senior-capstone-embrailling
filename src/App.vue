@@ -20,6 +20,11 @@
 </template>
 
 <script>
+/**
+ * Vue App
+ * Description: Application that houses the main componentent, also holds the help menu. 
+ */
+
 import BrailleTranslator from './components/BrailleTranslator.vue';
 
 export default {
@@ -33,6 +38,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Method: toggleHelpPopup
+     * Description: changes the showHelp var to display or hide the help pop up. 
+     */
     toggleHelpPopup() {
       this.showHelp = !this.showHelp;
     }, 
