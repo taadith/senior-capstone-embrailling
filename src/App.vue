@@ -119,5 +119,9 @@ export default {
   #logo {
     display: none;
   }
+
+  .help-popup {
+    width: 65%;
+  }
 }
 </style>
