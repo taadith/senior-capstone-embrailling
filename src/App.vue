@@ -1,5 +1,5 @@
 <template>
-  <button class="help-button" @click="toggleHelpPopup">Help</button>
+  <button class="help-button" @click="toggleHelpPopup" tabindex="1">Help</button>
     <div v-if="showHelp" class="help-popup blur-transition">
         <button class="close-button" @click="toggleHelpPopup">X</button>
         <h2 class="help-heading">How to Use The Embrailler</h2>
@@ -118,6 +118,10 @@ export default {
 @media (max-width: 768px) {
   #logo {
     display: none;
+  }
+
+  .help-popup {
+    width: 65%;
   }
 }
 </style>
