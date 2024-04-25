@@ -3,13 +3,13 @@
     <div class="input-section">
       <div class="textarea-container">
         <textarea :style="{fontSize: fontSize}" v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
-        <select class="font-size-selector" v-model="fontSize" aria-hidden="true">
-          <option value="12px">12px</option>
-          <option value="14px">14px</option>
-          <option value="16px">16px</option>
-          <option value="18px">18px</option>
-          <option value="20px">20px</option>
-          <option value="24px">24px</option>
+        <select class="font-size-selector" v-model="fontSize" aria-label="Select font size" tabindex="2">
+          <option class="font-value" value="12px">12px</option>
+          <option class="font-value" value="14px">14px</option>
+          <option class="font-value" value="16px">16px</option>
+          <option class="font-value" value="18px">18px</option>
+          <option class="font-value" value="20px">20px</option>
+          <option class="font-value" value="24px">24px</option>
         </select>
       </div>
       <div class="textarea-button-container">
@@ -320,13 +320,19 @@ textarea {
 }
 
 .font-size-selector {
-    position: absolute;
-    top: -15px;
-    left: 50px;
-    border: none;
-    background: #121212;
-    color: lightgrey;
-    cursor: pointer;
+  border: none;
+  position: absolute;
+  top: -15px;
+  left: 50px;
+  background: #121212;
+  color: lightgrey;
+  transition: all .5s ease;
+  border-radius: 4px;
+  border-width: 1px;
+}
+
+.font-size-selector:focus {
+  outline: 1px solid darkgrey;
 }
 
 @media (max-width: 768px) {
