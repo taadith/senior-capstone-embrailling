@@ -25,6 +25,10 @@
 // Import any necessary libraries or helpers for PDF extraction and Braille translation
 import axios from 'axios';
 
+// const apiClient = axios.create({
+//   baseURL: process.env.VUE_APP_API_BASE_URL
+// });
+
 export default {
   name: 'BrailleTranslator',
   data() {
@@ -55,7 +59,7 @@ export default {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       try {
-        const response = await axios.post('/translate_to_braille', formData, {
+        const response = await axios.post('https://secure-cliffs-34641-722d3ba3441b.herokuapp.com/translate_to_braille', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -72,7 +76,7 @@ export default {
     },
     
     downloadPDF() {
-      const url = '/download_pdf'; // Update with your Flask server URL
+      const url = 'https://secure-cliffs-34641-722d3ba3441b.herokuapp.com/download_pdf'; // Update with your Flask server URL
       axios.get(url, {
         responseType: 'blob', // Set the response type to blob to handle binary data
       })
@@ -105,7 +109,7 @@ export default {
       this.inputText = '';
 
       try {
-        const response = await axios.post('/translate_textbox_to_braille', formData, {
+        const response = await axios.post('https://secure-cliffs-34641-722d3ba3441b.herokuapp.com/translate_textbox_to_braille', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -138,7 +142,7 @@ export default {
 
       
       console.log("Sending request to Flask...");
-      fetch('/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
+      fetch('https://secure-cliffs-34641-722d3ba3441b.herokuapp.com/convert_to_dwg', { // Adjust this URL to match your Flask endpoint
         method: 'POST',
         body: formData,
       })
@@ -179,7 +183,7 @@ export default {
         return;
       }
 
-      const url = `/download_dwg/${jobId}`;
+      const url = `https://secure-cliffs-34641-722d3ba3441b.herokuapp.com/download_dwg/${jobId}`;
 
       // Fetch the DWG file from the server
       fetch(url)
