@@ -5,10 +5,10 @@ Web app and associated API to convert english text or pdf to AutoCAD file contai
 ## Overview
 Vue.js frontend application that makes calls to Python Flask API backend, backend uses pybrl for braille translation and Zamzar for file conversion
 
-- [File Structure](#file-structure)
+- File Structure
 - How to use
-  - [Online](#online)
-  - [Local Setup](local-setup)
+  - Online
+  - Local Setup
 
 ## File Structure
 Code is split up into two main sections, Vue.js front end, and Flask API backend. 
