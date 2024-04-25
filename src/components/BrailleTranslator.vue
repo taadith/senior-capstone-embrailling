@@ -284,6 +284,10 @@ export default {
   height: 100vh;
   padding-top: 50px;
   background-color: #121212;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 1200px;
   color: lightgrey;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
