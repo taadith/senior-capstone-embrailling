@@ -3,7 +3,6 @@ import pybrl as brl
 import subprocess
 import os
 
-
 def translate_to_braille(filename, pdf_password=None, language='english'):
 
     translated = brl.translatePDF(filename, password = pdf_password, language = language) # Easy, right?
