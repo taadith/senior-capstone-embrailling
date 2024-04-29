@@ -7,7 +7,7 @@ describe('BrailleTranslator.vue Test', () => {
       // render the component
       const wrapper = mount(BrailleTranslator)
   
-      // check that the title is rendered
-      expect(wrapper.text()).toMatch('Help')
+      // check that the text is rendered
+      expect(wrapper.text()).toMatch('Translate PDF')
     })
   })
