@@ -3,11 +3,10 @@
 Web app and associated API to convert english text or pdf to AutoCAD file containing grade-2 braille, for use in TAMU laser cutter to produce physical braille on capsule paper.
 
 ## Overview
-Vue.js frontend application that makes calls to Python Flask API backend, backend uses pybrl for braille translation and Zamzar for file conversion
+Vue.js frontend application that makes calls to Python Flask API backend, backend uses pybrl for braille translation and Zamzar for file conversion.
 
 - File Structure
 - How to use
-  - Online
   - Local Setup
 
 ## File Structure
@@ -19,8 +18,6 @@ Code is split up into two main sections, Vue.js front end, and Flask API backend
     - [Documentation](https://github.com/taadith/senior-capstone-embrailling/tree/dev/docs/backend)
 
 ## How to use
-
-### Online
 
 ### Local Setup
 
