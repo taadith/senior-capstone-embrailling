@@ -1,14 +1,22 @@
 # Load our dependencies
 import pybrl as brl
 import subprocess
-import boto3
 import os
 
 
-s3 = boto3.resource('s3')
-
 def translate_to_braille(filename, pdf_password=None, language='english'):
+    """
+    Function used from the pybrl library samples. Function parses a pdf file, translates it to braille, and generates a latex file. Finally using the xelatex subproccess convert to a pdf file.
+    
+    Args:
+    filename (str): path of uploaded input file.
+    pdf_password (Any): password if pdf is protect, by default 'None' is provided.
+    language (str): language of uploaded pdf and targeted braille, by default 'english' is provided. 
 
+    Returns:
+    Any: Return translated braille unicode, that is displayed on the vue application.
+    """
+    
     translated = brl.translatePDF(filename, password = pdf_password, language = language) # Easy, right?
 
     tex = ""                         # Template contents and what will be edited.
@@ -37,8 +45,5 @@ def translate_to_braille(filename, pdf_password=None, language='english'):
      
     subprocess.run(['xelatex', 'output.tex'], check=True)
     # print("PDF generated successfully.")
-
-    with open('output.pdf', 'rb') as data:
-        s3.Bucket('filestorageembraillerbucket185717-staging').put_object(Key='output.pdf', Body=data)
 
     return content

@@ -1,31 +1,41 @@
 <template>
   <div class="braille-translator">
     <div class="input-section">
-      <textarea v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+      <div class="textarea-container">
+        <textarea :style="{fontSize: fontSize}" v-model="inputText" placeholder="Enter text or upload a PDF" class="text-input"></textarea>
+        <select class="font-size-selector" v-model="fontSize" aria-label="Select font size" tabindex="2">
+          <option class="font-value" value="12px">12px</option>
+          <option class="font-value" value="14px">14px</option>
+          <option class="font-value" value="16px">16px</option>
+          <option class="font-value" value="18px">18px</option>
+          <option class="font-value" value="20px">20px</option>
+          <option class="font-value" value="24px">24px</option>
+        </select>
+      </div>
       <div class="textarea-button-container">
-        <label class="textarea-button" for="file-upload">Upload PDF</label>
+        <label class="textarea-button" for="file-upload">Translate PDF</label>
         <input id="file-upload" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileUpload" />
-        <button class="textarea-button" id="#translate-button" @click="translateToBraille">Translate PDF</button>
         <button class="textarea-button" id="#translate-text" @click="translateTextboxToBraille">Translate Text</button>
       </div>
     </div>
-      <div class="output-section">
-        <textarea v-model="brailleOutput" readonly class="text-output"></textarea>
-        <input type="file" @change="handleFileChange" accept=".pdf" />
-        <div class="textarea-button-container">
-          <button class="textarea-button" id="#translate-text" @click="downloadPDF">Download Translated PDF</button>
-          <label class="textarea-button" for="file-dwg">Upload PDF</label>
-          <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
-          <button class="textarea-button" @click="convertPdfToDwg">Convert PDF to DWG</button>
-          <button class="textarea-button" @click="downloadDwg(jobId)">Download DWG File</button>
-        </div>
+    <div class="output-section">
+      <div class="textarea-container">
+        <textarea :style="{fontSize: fontSize}" id="braille-output" v-model="brailleOutput" readonly class="text-output" aria-label="Braille Output"></textarea>
       </div>
+      <div class="textarea-button-container">
+        <label class="textarea-button" for="file-dwg">Convert PDF to DWG</label>
+        <input id="file-dwg" type="file" accept=".pdf" style="width: 0; height: 0;" @change="handleFileChange" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+/**
+ * Vue Componenet: Braille Translator
+ * Description: This is the main application component. Each button present makes calls to the Flask API that we have implemented
+ */
 
-// Import any necessary libraries or helpers for PDF extraction and Braille translation
 import axios from 'axios';
 
 export default {
@@ -37,6 +47,7 @@ export default {
       selectedFile: null,
       selectedPdfFile: null,
       jobId: null,
+      fontSize: '16px',
     };
   },
 
@@ -44,11 +55,21 @@ export default {
   },
 
   methods: {
+    /**
+     * Method: handleFileUpload
+     * Description: sets selected file to one user has uploaded
+     * @param {any} event
+     */
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0];
-      this.$notify({type: "alert", text: "File selected."});
+      this.translateToBraille();
     },
-  
+    
+    /**
+     * Method: translateToBraille
+     * Description: takes the selected pdf file from the user and calls the translate_to_braille endpoint. The file is passed to the Flask API as the form data.
+     * The braille unicode response is then displayed inside of the braille output textfield.
+     */
     async translateToBraille() {
       if (!this.selectedFile) {
         this.$notify({type: "error", text: "Please select a file first!"});
@@ -67,14 +88,20 @@ export default {
         this.$notify({type: "success", text: "Translation complete!"});
         // Handle the response data as needed, such as displaying the translation
         this.brailleOutput = response.data['translatedContent'];
+        this.downloadPDF();
       } catch (error) {
         console.error('Translation Error:', error);
         this.$notify({type: "error", text: "Translation error."});
       }
     },
     
+    /**
+     * Method: downloadPDF
+     * Description: Calls the Flask API endpoint to intiate the local download of the translated pdf file. The API responds back with the translated file.
+     * After the response the file is downloaded locally under the name 'download-success.pdf' to the users downloads directory.
+     */
     downloadPDF() {
-      const url = 'http://127.0.0.1:5000/download_pdf'; // Update with your Flask server URL
+      const url = 'http://127.0.0.1:5000/download_pdf';
       axios.get(url, {
         responseType: 'blob', // Set the response type to blob to handle binary data
       })
@@ -82,10 +109,9 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'donwload-success.pdf'); // Specify the file name
+        link.setAttribute('download', 'download-success.pdf'); // Specify the file name
         document.body.appendChild(link);
         link.click();
-        this.$notify({type: "success", text: "PDF downloaded!"});
       })
       .catch(error => {
         console.error('Error downloading PDF:', error);
@@ -93,6 +119,11 @@ export default {
       });
     },
 
+    /**
+     * Method: translateTextboxToBraille
+     * Description: takes the text inputted from the user and calls the translate_textbox_to_braille endpoint. The text is passed to the Flask API as the form data.
+     * The braille unicode response is then displayed inside of the braille output textfield.
+     */
     async translateTextboxToBraille(){
       if(!(this.inputText.trim().length > 0)){
         this.$notify({type: "error", text: "Please enter text first!"});
@@ -118,6 +149,7 @@ export default {
         // Handle the response data as needed, such as displaying the translation
         console.log(response.data[1]['brailleUnicode']);
         this.brailleOutput = response.data[1]['brailleUnicode'];
+        this.downloadPDF();
       } catch (error) {
         console.error('Translation Error:', error);
         this.$notify({type: "error", text: "Translation error."});
@@ -125,6 +157,11 @@ export default {
 
     },
 
+    /**
+     * Method: convertPdfToDwg
+     * Description: user uploads a pdf file that is then converted to dwg. This method calls the convert_to_dwg endpoint in the Flask API
+     * The uploaded pdf is sent as the form data.
+     */
     convertPdfToDwg() {
       console.log("Starting conversion process...");
 
@@ -152,6 +189,7 @@ export default {
         if (data.jobId) {
           console.log('Conversion started, job ID:', data.jobId);
           this.jobId = data.jobId;
+          this.downloadDwg(this.jobId);
         } else {
           console.error('Failed to start conversion:', data);
           this.$notify({type: "error", text: "Conversion failed."});
@@ -163,17 +201,28 @@ export default {
       });
     },
 
+    /**
+     * Method: handleFileChange 
+     * Description: after user uploades a pdf file, the convertPdfToDwg method is called to initiate the file conversion.
+     * @param {any} event
+     */
     handleFileChange(event) {
       const files = event.target.files;
       if (files.length > 0) {
         this.selectedPdfFile = files[0];
         console.log("File selected:", this.selectedPdfFile.name);
-        this.$notify({type: "alert", text: "File selected."});
+        this.convertPdfToDwg();
       } else {
         this.selectedPdfFile = null;
       }
     },
 
+    /**
+     * Method: downloadDwg
+     * Description: Using the jobId for the Zamzar conversion calls the download_dwg endpoint on the FlaskAPI.
+     * Constantly fetches and sees if the conversion has finished and displays appropriate notifications. 
+     * @param {any} jobId - jobId for Zamzar file conversion
+     */
     downloadDwg(jobId) {
       console.log("Attempting to download DWG file for Job ID:", jobId);
       if (!jobId) {
@@ -183,31 +232,46 @@ export default {
 
       const url = `http://127.0.0.1:5000/download_dwg/${jobId}`;
 
-      // Fetch the DWG file from the server
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            this.$notify({type: "warn", text: "DWG isn't finished converting!"});
-            throw new Error(`Server returned ${response.status} when trying to download DWG file.`);
-          }
-          return response.blob();
-        })
-        .then(blob => {
-          // Create a new link element and trigger the download
-          const downloadUrl = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = downloadUrl;
-          link.setAttribute('download', 'output.dwg');
-          document.body.appendChild(link);
-          link.click();
-          link.parentNode.removeChild(link);
-          window.URL.revokeObjectURL(downloadUrl);
-          this.$notify({type: "success", text: "DWG downloaded!"});
-        })
-        .catch(error => {
-          console.error('Download failed:', error);
-        });
-    }
+      this.polling = setInterval(() => {
+        let done = true;
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              this.$notify({type: "warn", text: "Please wait..."});
+              done = false;
+            }
+            return response.blob();
+          })
+          .then(blob => {
+            if (done)
+            {
+              // Create a new link element and trigger the download
+              const downloadUrl = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              link.setAttribute('download', 'output.dwg');
+              document.body.appendChild(link);
+              link.click();
+              link.parentNode.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+              this.$notify({type: "success", text: "DWG downloaded!"});
+              clearInterval(this.polling);
+            }
+          })
+          .catch(error => {
+            console.error('Download failed:', error);
+            clearInterval(this.polling);
+          });
+        }, 5000)
+    },
+
+    pollAPI() {
+      return;
+    },
+
+    beforeDestroy() {
+      clearInterval(this.polling);
+    },
   }
 };
 </script>
@@ -220,7 +284,11 @@ export default {
   height: 100vh;
   padding-top: 50px;
   background-color: #121212;
-  color: #ffffff;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 1200px;
+  color: lightgrey;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -231,22 +299,15 @@ export default {
 
 .text-input,
 .text-output {
-  height: 80%;
+  height: 300px;
   width: 100%;
   max-width: 600px;
   border: none;
   border-radius: 5px;
-}
-
-.text-input,
-.text-output {
-  width: 100%;
-  height: 300px;
-  margin-bottom: 15px; /* Space between text area and button */
   background-color: #1e1e1e;
-  color: #ffffff;
+  color: lightgrey;
   font-size: 16px;
-  resize: none; /* Disables resize handle */
+  resize: none;
 }
 
 textarea {
@@ -258,23 +319,35 @@ textarea {
 }
 
 .textarea-button-container {
-  margin-top: auto;
+  display: flex;
+  justify-content: center;
 }
 
-
-#translate-button{
-border-bottom-right-radius: 10px;
+.font-size-selector {
+  border: none;
+  position: absolute;
+  top: -15px;
+  left: 50px;
+  background: #121212;
+  color: lightgrey;
+  transition: all .5s ease;
+  border-radius: 4px;
+  border-width: 1px;
 }
 
-.download-button {
-  background-color: #2979ff;
-  color: #ffffff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.font-size-selector:focus {
+  outline: 1px solid darkgrey;
 }
 
-.download-button:hover {
-  background-color: #5393ff;
+@media (max-width: 768px) {
+  .braille-translator {
+    flex-direction: column;
+    padding-top: 20px;
+  }
+
+  .input-section, .output-section {
+    width: 90%;
+  }
 }
+
 </style>

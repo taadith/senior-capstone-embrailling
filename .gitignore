@@ -55,3 +55,4 @@ amplifytools.xcconfig
 *.pdf
 *.aux
 *.tex
+*.dwg
