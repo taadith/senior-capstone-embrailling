@@ -51,7 +51,7 @@ npm run build
 npm run lint
 ```
 
-#### Running the project
+### Running the project
 ```
 Terminal 1: senior-capstone-embrailling$ npm run serve
 Terminal 2: senior-capstone-embrailling/backend$ flask --app Flask.py run
