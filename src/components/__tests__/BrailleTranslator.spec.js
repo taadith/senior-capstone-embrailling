@@ -15,7 +15,7 @@ describe('BrailleTranslator.vue Test', () => {
       const wrapper = mount(BrailleTranslator)
       const textBoxInput = wrapper.find('textarea')
       await textBoxInput.setValue("testing text!")
-      await wrapper.get("button").trigger("click");
+      const verifyClick = await wrapper.get("button").trigger("click");
       expect(wrapper.text()).not.toMatch('testing text!')
   
       // check that the text is rendered
